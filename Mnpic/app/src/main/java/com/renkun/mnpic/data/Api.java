@@ -4,6 +4,9 @@ package com.renkun.mnpic.data;
  * Created by rk on 2015/10/11.
  */
 public class Api {
+    //img字段返回的是不完整的图片路径src，
+    public static final String TNPIC_http=
+            "http://tnfs.tngou.net/image";
     //取得图片分类，可以通过分类id取得热词列表
     public static final String TNPIC_CLASSIFY=
             "http://www.tngou.net/tnfs/api/classify";

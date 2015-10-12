@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.dao.DBopenHelper;
 import com.renkun.mnpic.ui.adapter.FragmentAdapter;
@@ -32,6 +33,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
         setContentView(R.layout.activity_main);
         //初始化控件和布局
         initView();
