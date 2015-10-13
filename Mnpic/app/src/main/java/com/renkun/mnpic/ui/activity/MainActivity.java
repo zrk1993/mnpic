@@ -6,20 +6,23 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.dao.DBopenHelper;
 import com.renkun.mnpic.ui.adapter.FragmentAdapter;
+import com.renkun.mnpic.ui.fragment.ClassifyFragment;
 import com.renkun.mnpic.ui.fragment.FeedFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity {
     //将ToolBar与TabLayout结合放入AppBarLayout
     private Toolbar mToolbar;
     //DrawerLayout中的左侧菜单控件
@@ -33,43 +36,38 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //全屏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //初始化，Fresco图片加载库
         Fresco.initialize(this);
+
         setContentView(R.layout.activity_main);
         //初始化控件和布局
         initView();
     }
     private void initView(){
         //MainActivity的布局文件中的主要控件初始化
-        mToolbar = (Toolbar) this.findViewById(R.id.tool_bar);
-        mDrawerLayout = (DrawerLayout) this.findViewById(R.id.drawer_layout);
-        mNavigationView = (NavigationView) this.findViewById(R.id.navigation_view);
         mTabLayout = (TabLayout) this.findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) this.findViewById(R.id.view_pager);
-
-        //初始化ToolBar
-        mToolbar.setTitle("hello");
-        setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(android.R.drawable.ic_dialog_alert);
-
-        //对NavigationView添加item的监听事件
-        mNavigationView.setNavigationItemSelectedListener(naviListener);
-
         //初始化TabLayout的title数据集
         List<String> titles = new ArrayList<>();
-        titles.add("details");
-        titles.add("share");
-        titles.add("agenda");
+        titles.add("热门美女");
+        titles.add("精品分类");
+        titles.add("我的收藏");
         //初始化TabLayout的title
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(2)));
         //初始化ViewPager的数据集
 
-
-
         List<Fragment> fragments = new ArrayList<>();
         FeedFragment feedFragment=new FeedFragment();
         fragments.add(feedFragment);
+        ClassifyFragment classifyFragment=new ClassifyFragment();
+        fragments.add(classifyFragment);
+        FeedFragment feedFragment3=new FeedFragment();
+        fragments.add(feedFragment3);
         //创建ViewPager的adapter
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager(), fragments, titles);
         mViewPager.setAdapter(adapter);
@@ -78,34 +76,12 @@ public class MainActivity extends BaseActivity {
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(adapter);
     }
-    //抽屉的view监听器
-    private NavigationView.OnNavigationItemSelectedListener naviListener = new NavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(MenuItem menuItem) {
-            //点击NavigationView中定义的menu item时触发反应
-            switch (menuItem.getItemId()) {
-                case R.id.menu_info_details:
-                    mViewPager.setCurrentItem(0);
-                    break;
-                case R.id.menu_share:
-                    mViewPager.setCurrentItem(1);
-                    break;
-                case R.id.menu_agenda:
-                    mViewPager.setCurrentItem(2);
-                    break;
-            }
-            //关闭DrawerLayout回到主界面选中的tab的fragment页
-            mDrawerLayout.closeDrawer(mNavigationView);
-            return false;
-        }
-    };
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

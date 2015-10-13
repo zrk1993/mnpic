@@ -38,17 +38,18 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
     private int PIC_CLASSIFY = 1;//图片类别
     private int PIC_ROWS = 3;//图片条数
     private int PIC_PAGE = 1;//图片分页
-
-    private Uri mUri=Uri.parse(DataProvider.SCHEME + DataProvider.AUTHORITY + String.valueOf(PIC_CLASSIFY));
+    //页面图片集，数据库地址
+    private Uri mUri;
 
     public FeedFragment() {
         // Required empty public constructor
+        mUri=Uri.parse(DataProvider.SCHEME + DataProvider.AUTHORITY + String.valueOf(PIC_CLASSIFY));
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -59,8 +60,9 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
         mGridView = mPullRefreshGridView.getRefreshableView();
 
         mPicListCursorAdapter=new PicListCursorAdapter(getActivity(),mGridView);
+        mGridView.setNumColumns(1);
         mGridView.setAdapter(mPicListCursorAdapter);
-        mGridView.setNumColumns(2);
+
 
         getLoaderManager().initLoader(0, null, this);
         loadFirst();
@@ -78,7 +80,7 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private void loadData() {
         final Request request = new Request.Builder()
-                .url(String.format(Api.TNPIC_LIST, PIC_CLASSIFY, PIC_ROWS, PIC_PAGE))
+                .url(String.format(Api.TNPIC_NEWS, 55, PIC_ROWS, PIC_CLASSIFY))
                 .get()
                 .addHeader("accept", "application/json")
                 .addHeader("content-type", "application/json")

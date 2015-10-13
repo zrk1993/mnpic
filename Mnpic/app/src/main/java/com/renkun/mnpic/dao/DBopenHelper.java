@@ -16,7 +16,7 @@ public class DBopenHelper extends SQLiteOpenHelper {
     /**
      * 图片分类
      */
-    public static final String CREATE_GALLERYCLASS ="create table Image_classification ("
+    public static final String CREATE_GALLERYCLASS ="create table pic_classification ("
             +"_id integer primary key autoincrement,"
             +"description,"
             +"id,"
