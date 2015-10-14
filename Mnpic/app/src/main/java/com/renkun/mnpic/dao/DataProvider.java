@@ -127,8 +127,11 @@ public class DataProvider extends ContentProvider {
     }
 
     private String matchTable(Uri uri) {
-        String table="pic_"+uri.getLastPathSegment();
-        Log.d("TAG",table);
+        String table;
+        int i= Integer.parseInt(uri.getLastPathSegment());
+        if (i>0&&i<8)
+             table="pic_classify";
+        else table="pic_newest";
         return table;
     }
 

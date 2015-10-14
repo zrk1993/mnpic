@@ -34,15 +34,22 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
     private PullToRefreshGridView mPullRefreshGridView;
     private PicListCursorAdapter mPicListCursorAdapter;
 
-
+    private int NumColumns=1;
     private int PIC_CLASSIFY = 1;//图片类别
     private int PIC_ROWS = 3;//图片条数
     private int PIC_PAGE = 1;//图片分页
     //页面图片集，数据库地址
     private Uri mUri;
 
-    public FeedFragment() {
+    public FeedFragment(int classify,int NumColumns) {
         // Required empty public constructor
+        this();
+        PIC_CLASSIFY=classify;
+        this.NumColumns=NumColumns;
+        mUri=Uri.parse(DataProvider.SCHEME + DataProvider.AUTHORITY + String.valueOf(PIC_CLASSIFY));
+
+    }
+    public FeedFragment(){
         mUri=Uri.parse(DataProvider.SCHEME + DataProvider.AUTHORITY + String.valueOf(PIC_CLASSIFY));
 
     }
@@ -60,12 +67,12 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
         mGridView = mPullRefreshGridView.getRefreshableView();
 
         mPicListCursorAdapter=new PicListCursorAdapter(getActivity(),mGridView);
-        mGridView.setNumColumns(1);
+        mGridView.setNumColumns(NumColumns);
         mGridView.setAdapter(mPicListCursorAdapter);
 
 
         getLoaderManager().initLoader(0, null, this);
-        loadFirst();
+        //loadFirst();
         return mPullRefreshGridView;
     }
 
@@ -107,7 +114,8 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
     //Loader的3个方法
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),mUri,null,null,null,null);
+        return new CursorLoader(getActivity(),mUri,null, null, null, null);
+
     }
 
     @Override

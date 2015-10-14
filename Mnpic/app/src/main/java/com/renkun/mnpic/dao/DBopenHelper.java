@@ -13,31 +13,50 @@ public class DBopenHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "mnpic.db";
     // 数据库版本
     private static final int VERSION = 1;
-    /**
-     * 图片分类
-     */
-    public static final String CREATE_GALLERYCLASS ="create table pic_classification ("
-            +"_id integer primary key autoincrement,"
-            +"description,"
-            +"id,"
-            +"keywords,"
-            +"name,"
-            +"seq,"
-            +"title)";
+//    /**
+//     * 图片分类
+//     */
+//    public static final String CREATE_GALLERYCLASS ="create table pic_classification ("
+//            +"_id integer primary key autoincrement,"
+//            +"description,"
+//            +"id,"
+//            +"keywords,"
+//            +"name,"
+//            +"seq,"
+//            +"title)";
 
     /**
-     * http://www.tngou.net/doc/gallery提供的 图片内容
-     * 总共7个表，从pic_1到pic_7
+     * 最新图集的表
+     * http://www.tngou.net/tnfs/api/news?id=10&rows=10&classify=1提供的 图片内容
+     * 图片分类所对应的表
      * id是唯一值，根据它，获得图集
      * galleryclass图集所属类别
+     * time发布时间
      */
-    public static final String PIC_TNGOU ="create table pic_%1$d ("
+    public static final String PIC_NEWEST ="create table pic_newest("
             +"_id integer primary key autoincrement,"
             +"galleryclass,"
             +"id,"
             +"img,"
             +"size,"
             +"count,"
+            +"time,"
+            +"title)";
+    /**
+     * http://www.tngou.net/tnfs/api/news?id=10&rows=10&classify=1提供的 图片内容
+     * 图片分类所对应的表
+     * id是唯一值，根据它，获得图集
+     * galleryclass图集所属类别
+     * time发布时间
+     */
+    public static final String PIC_TNGOU ="create table pic_classify("
+            +"_id integer primary key autoincrement,"
+            +"galleryclass,"
+            +"id,"
+            +"img,"
+            +"size,"
+            +"count,"
+            +"time,"
             +"title)";
 
     public DBopenHelper(Context context) {
@@ -46,11 +65,8 @@ public class DBopenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("TAG","数据库");
-        db.execSQL(CREATE_GALLERYCLASS);
-        for (int i=1;i<=7;i++){
-            db.execSQL(String.format(PIC_TNGOU, i));
-        }
+        db.execSQL(PIC_NEWEST);
+        db.execSQL(PIC_TNGOU);
 
 
     }
