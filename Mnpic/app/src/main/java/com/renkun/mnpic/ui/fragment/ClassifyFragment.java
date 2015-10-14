@@ -1,16 +1,20 @@
 package com.renkun.mnpic.ui.fragment;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.dao.DataProvider;
+import com.renkun.mnpic.ui.activity.DetailsClassifyActivity;
 import com.renkun.mnpic.ui.adapter.ClassifyAdapter;
 
 /**
@@ -21,11 +25,8 @@ public class ClassifyFragment extends Fragment  {
     private GridView mGridView;
     private ClassifyAdapter mClassifyAdapter;
 
-    private Uri mUri;
     public ClassifyFragment() {
         // Required empty public constructor
-        mUri=Uri.parse(DataProvider.SCHEME + DataProvider.AUTHORITY + "classification");
-
     }
 
 
@@ -38,9 +39,22 @@ public class ClassifyFragment extends Fragment  {
         mClassifyAdapter=new ClassifyAdapter(getActivity(),R.layout.fragment_classify_item);
         mGridView.setNumColumns(3);
         mGridView.setAdapter(mClassifyAdapter);
+        mGridView.setOnItemClickListener(new GrideItemClickedListener());
+
         loadData();
         return view;
     }
+    private class GrideItemClickedListener implements AdapterView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent=new Intent(getActivity(), DetailsClassifyActivity.class);
+            intent.setPackage(getActivity().getPackageName());
+            intent.putExtra("position",position);
+            getActivity().startActivity(intent);
+        }
+    }
+
     private void loadData(){
 
     }

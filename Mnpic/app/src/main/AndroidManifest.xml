@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.renkun.mnpic" >
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,10 +19,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
-            android:authorities="com.renkun.mnpic.provider"
             android:name=".dao.DataProvider"
-            android:exported="false"/>
+            android:authorities="com.renkun.mnpic.provider"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.DetailsClassifyActivity"
+            android:label="@string/title_activity_details_classify"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

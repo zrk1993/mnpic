@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         titles.add("精品分类");
         titles.add("我的收藏");
         //初始化TabLayout的title
+        
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(2)));
@@ -66,8 +67,9 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(feedFragment);
         ClassifyFragment classifyFragment=new ClassifyFragment();
         fragments.add(classifyFragment);
-        FeedFragment feedFragment3=new FeedFragment();
-        fragments.add(feedFragment3);
+        ClassifyFragment classifyFragment1=new ClassifyFragment();
+        fragments.add(classifyFragment1);
+
         //创建ViewPager的adapter
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager(), fragments, titles);
         mViewPager.setAdapter(adapter);

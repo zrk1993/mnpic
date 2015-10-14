@@ -2,10 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="10dp"
                 xmlns:fresco="http://schemas.android.com/apk/res-auto">
     <com.facebook.drawee.view.SimpleDraweeView
-        android:padding="10dp"
         android:id="@+id/item_pic"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -13,5 +15,13 @@
         android:minHeight="200dp"
         fresco:placeholderImage="@drawable/qq"
         />
-
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorGray"
+        android:textSize="14sp"
+        android:layout_alignBottom="@id/item_pic"/>
 </RelativeLayout>

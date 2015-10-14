@@ -4,6 +4,9 @@
     android:layout_width="match_parent"
     xmlns:ptr="http://schemas.android.com/apk/res-auto"
     ptr:ptrMode="both"
-    android:layout_margin="14dp"
+    android:paddingTop="10dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android"/>
 

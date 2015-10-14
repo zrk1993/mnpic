@@ -100,12 +100,6 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
                 getActivity().getContentResolver()
                         .bulkInsert(mUri,
                                 Gallery.getContentValues(jsonBean));
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                });
             }
         });
 

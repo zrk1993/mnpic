@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.GridView;
+import android.widget.TextView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.data.Api;
@@ -22,7 +24,12 @@ public class ClassifyAdapter extends ArrayAdapter {
     private LayoutInflater mLayoutInflater;
     private GridView mGridView;
     private Context mContext;
-
+    //分类图片
+    private static final int pic[]={R.mipmap.pic_1,R.mipmap.pic_2,R.mipmap.pic_3,R.mipmap.pic_4,
+            R.mipmap.pic_5,R.mipmap.pic_6,R.mipmap.pic_7};
+    //分类标题
+    private static final String title[]={"性感美女","韩日美女","丝袜美腿","美女照片",
+                                            "美女写真","清纯美女","性感车模"};
     public ClassifyAdapter(Context context, int resource) {
         super(context, resource);
         mContext=context;
@@ -30,7 +37,7 @@ public class ClassifyAdapter extends ArrayAdapter {
 
     @Override
     public int getCount() {
-        return 8;
+        return 7;
     }
 
 
@@ -46,9 +53,9 @@ public class ClassifyAdapter extends ArrayAdapter {
         }else {
             holder= (Holder) convertView.getTag();
         }
-        Uri uri = Uri.parse("http://tnfs.tngou.net/image/ext/150714/e76407c9a23da57a0f30690aa7917f3e.jpg");
-
-        holder.mImageView.setAspectRatio(0.75f);
+        holder.mTextView.setText(title[position]);
+        Uri uri = Uri.parse("res://com.renkun.mnpic/" + pic[position]);
+        holder.mImageView.setAspectRatio(0.65f);
         holder.mImageView.setImageURI(uri);
         return convertView;
     }
@@ -56,10 +63,11 @@ public class ClassifyAdapter extends ArrayAdapter {
     static class Holder{
 
         SimpleDraweeView mImageView;
+        TextView mTextView;
 
         public Holder(View view){
             mImageView= (SimpleDraweeView) view.findViewById(R.id.item_pic);
-
+            mTextView= (TextView) view.findViewById(R.id.item_text);
         }
     }
 }
