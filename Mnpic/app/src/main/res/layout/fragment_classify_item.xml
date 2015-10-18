@@ -14,6 +14,7 @@
         android:layout_height="175dp"
         android:scaleType="centerCrop"
         />
+
     <TextView
         android:id="@+id/item_text"
         android:layout_width="match_parent"

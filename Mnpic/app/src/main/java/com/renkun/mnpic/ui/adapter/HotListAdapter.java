@@ -36,7 +36,9 @@ public class HotListAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         Holder holder=getHolder(view);
         Picasso.with(context).load(Api.TNPIC_http+cursor.getString(cursor.getColumnIndex("img")))
+                .placeholder(R.mipmap.pic_1)
                 .into(holder.mImageView);
+
 
     }
     private Holder getHolder(final View view) {

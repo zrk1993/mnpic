@@ -2,6 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             xmlns:ptr="http://schemas.android.com/apk/res-auto"
              tools:context="com.renkun.mnpic.ui.fragment.HotFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -16,6 +17,7 @@
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
-        android:smoothScrollbar="true" />
+        android:smoothScrollbar="true"
+        ptr:ptrMode="both"/>
 
 </FrameLayout>

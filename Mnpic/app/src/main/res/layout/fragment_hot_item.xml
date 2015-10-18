@@ -10,7 +10,8 @@
     <ImageView
         android:id="@+id/item_pic"
         android:layout_width="match_parent"
-        android:layout_height="440dp"
-        android:scaleType="centerCrop"/>
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true" />
 
 </RelativeLayout>

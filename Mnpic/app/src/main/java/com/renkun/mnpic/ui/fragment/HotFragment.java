@@ -41,12 +41,12 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
     private HotListAdapter mHotListAdapter;
 
     private int NumColumns=1;
-    private int PIC_CLASSIFY = 1;//图片类别
-    private int PIC_ROWS = 6;//图片条数
+    private int PIC_CLASSIFY = 0;//图片类别
+    private int PIC_ROWS = 3;//图片条数
     private int PIC_PAGE = 1;//图片分页
-    private String MAX_ID;//当前数据里保存的最大该类目的图片id,所对应的Preference索引
+    private String MIN_ID;//当前数据里保存的该类目的图片最小id,所对应的Preference索引
     //MAX_ID所对应的Preference索引的值
-    private int MAX_ID_NUM;
+    private int MIN_ID_NUM;
     private Cursor mCursor;
 
     //页面图片集，数据库地址
@@ -55,7 +55,7 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
     public HotFragment(int classify,int NumColumns) {
         // Required empty public constructor
         PIC_CLASSIFY=classify;
-        MAX_ID="MAX_ID_"+PIC_CLASSIFY;
+        MIN_ID="MAX_ID_"+PIC_CLASSIFY;
         this.NumColumns=NumColumns;
         mUri=Uri.parse(DataProvider.SCHEME + DataProvider.AUTHORITY + String.valueOf(PIC_CLASSIFY));
 
@@ -67,7 +67,7 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
     @Override
     public void onResume() {
         super.onResume();
-        MAX_ID_NUM=getActivity().getPreferences(Context.MODE_APPEND).getInt(MAX_ID, 0);
+        MIN_ID_NUM=getActivity().getPreferences(Context.MODE_APPEND).getInt(MIN_ID, 0);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
         getLoaderManager().initLoader(0, null, this);
         mPullRefreshListView.setAdapter(mHotListAdapter);
         mListView.setOnItemClickListener(new ListViewOnclickedListener());
-        //loadFirst();
+        loadFirst();
         return view;
     }
 
@@ -101,17 +101,19 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
         }
     }
     private void loadFirst() {
-        loadData();
+        String url="http://www.tngou.net/tnfs/api/list?rows="+PIC_ROWS+"&page=1";
+        loadData(url);
     }
 
     private void loadNext() {
-        loadData();
+        String url="http://www.tngou.net/tnfs/api/news?id="+(MIN_ID_NUM-PIC_ROWS-1)+"&rows="+PIC_ROWS;
+        loadData(url);
     }
 
-    private void loadData() {
+    private void loadData(String url) {
+
         final Request request = new Request.Builder()
-                .url(String.format(Api.TNPIC_NEWS,MAX_ID_NUM,
-                        PIC_ROWS, PIC_CLASSIFY))
+                .url(url)
                 .get()
                 .addHeader("accept", "application/json")
                 .addHeader("content-type", "application/json")
@@ -132,7 +134,10 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
                 getActivity().getContentResolver()
                         .bulkInsert(mUri,
                                 Gallery.getContentValues(jsonBean));
-                MAX_ID_NUM=jsonBean.tngou.get(jsonBean.tngou.size()-1).id;
+                Log.d("http",MIN_ID_NUM+"   "+jsonBean.tngou.get(jsonBean.tngou.size()-1).id);
+                if (MIN_ID_NUM==0)MIN_ID_NUM=jsonBean.tngou.get(0).id;
+                MIN_ID_NUM=jsonBean.tngou.get(0).id>=MIN_ID_NUM
+                        ?MIN_ID_NUM:jsonBean.tngou.get(0).id;
             }
         });
 
@@ -168,12 +173,12 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
 
         @Override
         public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-
+            loadFirst();
         }
 
         @Override
         public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-
+            loadNext();
         }
     }
 
@@ -183,6 +188,6 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
         super.onPause();
         ////MAX_ID所对应的Preference索引的值
         getActivity().getPreferences(Context.MODE_APPEND)
-                .edit().putInt(MAX_ID,MAX_ID_NUM).commit();
+                .edit().putInt(MIN_ID,MIN_ID_NUM).commit();
     }
 }

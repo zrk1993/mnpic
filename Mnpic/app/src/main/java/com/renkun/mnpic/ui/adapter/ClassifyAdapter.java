@@ -53,7 +53,7 @@ public class ClassifyAdapter extends ArrayAdapter {
             holder= (Holder) convertView.getTag();
         }
         holder.mTextView.setText(title[position]);
-        Picasso.with(mContext).load(pic[position]).into(holder.mImageView);
+        Picasso.with(mContext).load(pic[position]).fit().into(holder.mImageView);
         return convertView;
     }
 
