@@ -35,10 +35,10 @@ public class DBopenHelper extends SQLiteOpenHelper {
      */
     public static final String PIC_NEWEST ="create table pic_newest("
             +"_id integer primary key autoincrement,"
-            +"galleryclass,"
-            +"id,"
+            +"galleryclass integer,"
+            +"id integer unique,"
             +"img,"
-            +"size,"
+            +"size integer,"
             +"count,"
             +"time,"
             +"title)";
@@ -51,10 +51,10 @@ public class DBopenHelper extends SQLiteOpenHelper {
      */
     public static final String PIC_TNGOU ="create table pic_classify("
             +"_id integer primary key autoincrement,"
-            +"galleryclass,"
-            +"id,"
+            +"galleryclass integer,"
+            +"id integer unique,"
             +"img,"
-            +"size,"
+            +"size integer,"
             +"count,"
             +"time,"
             +"title)";

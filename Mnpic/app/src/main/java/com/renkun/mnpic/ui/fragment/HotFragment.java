@@ -16,15 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ListView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.dao.DataProvider;
 import com.renkun.mnpic.data.Api;
 import com.renkun.mnpic.data.OkHttpClientManager;
 import com.renkun.mnpic.module.Gallery;
 import com.renkun.mnpic.ui.activity.PhotoDetailsActivity;
+import com.renkun.mnpic.ui.adapter.HotListAdapter;
 import com.renkun.mnpic.ui.adapter.PicListCursorAdapter;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -32,10 +35,10 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
-public class FeedFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private GridView mGridView;
-    private PullToRefreshGridView mPullRefreshGridView;
-    private PicListCursorAdapter mPicListCursorAdapter;
+public class HotFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private ListView mListView;
+    private PullToRefreshListView mPullRefreshListView;
+    private HotListAdapter mHotListAdapter;
 
     private int NumColumns=1;
     private int PIC_CLASSIFY = 1;//图片类别
@@ -45,10 +48,11 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
     //MAX_ID所对应的Preference索引的值
     private int MAX_ID_NUM;
     private Cursor mCursor;
+
     //页面图片集，数据库地址
     private Uri mUri;
 
-    public FeedFragment(int classify,int NumColumns) {
+    public HotFragment(int classify,int NumColumns) {
         // Required empty public constructor
         PIC_CLASSIFY=classify;
         MAX_ID="MAX_ID_"+PIC_CLASSIFY;
@@ -56,9 +60,8 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
         mUri=Uri.parse(DataProvider.SCHEME + DataProvider.AUTHORITY + String.valueOf(PIC_CLASSIFY));
 
     }
-    public FeedFragment(){
+    public HotFragment(){
         mUri=Uri.parse(DataProvider.SCHEME + DataProvider.AUTHORITY + String.valueOf(PIC_CLASSIFY));
-
     }
 
     @Override
@@ -75,32 +78,28 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mPullRefreshGridView = (PullToRefreshGridView) inflater.inflate(R.layout.fragment_feed, container, false);
-        mPullRefreshGridView.setOnRefreshListener(new OnGrideRefreshListener());
-        mGridView = mPullRefreshGridView.getRefreshableView();
-
-        mPicListCursorAdapter=new PicListCursorAdapter(getActivity(),mGridView);
-        mGridView.setNumColumns(NumColumns);
-        mGridView.setAdapter(mPicListCursorAdapter);
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mCursor.moveToPosition(position);
-                Intent intent=new Intent(getActivity(), PhotoDetailsActivity.class);
-                intent.setPackage(getActivity().getPackageName());
-                intent.putExtra("id", mCursor.getInt(mCursor.getColumnIndex("id")));
-                startActivity(intent);
-
-            }
-        });
-
-
+        View view =  inflater.inflate(R.layout.fragment_hot, container, false);
+        mPullRefreshListView = (PullToRefreshListView) view.findViewById(R.id.pull_refresh_list);
+        mListView=mPullRefreshListView.getRefreshableView();
+        mPullRefreshListView.setOnRefreshListener(new OnListRefreshListener());
+        mHotListAdapter=new HotListAdapter(getContext(),mListView);
         getLoaderManager().initLoader(0, null, this);
+        mPullRefreshListView.setAdapter(mHotListAdapter);
+        mListView.setOnItemClickListener(new ListViewOnclickedListener());
         //loadFirst();
-        return mPullRefreshGridView;
+        return view;
     }
 
-
+    private class ListViewOnclickedListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            mCursor.moveToPosition(position-1);//position从1开始，cursor从0开始
+            Intent intent=new Intent(getActivity(), PhotoDetailsActivity.class);
+            intent.setPackage(getActivity().getPackageName());
+            intent.putExtra("id", mCursor.getInt(mCursor.getColumnIndex("id")));
+            startActivity(intent);
+        }
+    }
     private void loadFirst() {
         loadData();
     }
@@ -141,15 +140,15 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
     //Loader的3个方法
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),mUri,null, "galleryclass=?", new String[]{String.valueOf(PIC_CLASSIFY)}, null);
+        return new CursorLoader(getActivity(),mUri,null, null, null, null);
 
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursor=data;
-        mPicListCursorAdapter.changeCursor(data);
-        mPullRefreshGridView.onRefreshComplete();
+        mHotListAdapter.changeCursor(data);
+        mPullRefreshListView.onRefreshComplete();
         Snackbar.make(getView(),data.getCount()+"",Snackbar.LENGTH_LONG)
                 .setAction("yes", new View.OnClickListener() {
                     @Override
@@ -161,19 +160,20 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mPicListCursorAdapter.changeCursor(null);
+        mHotListAdapter.changeCursor(null);
     }
 
     //Gride的刷新监听类
-    private class OnGrideRefreshListener implements PullToRefreshBase.OnRefreshListener2<GridView> {
+    private class OnListRefreshListener implements PullToRefreshBase.OnRefreshListener2<ListView> {
+
         @Override
-        public void onPullDownToRefresh(final PullToRefreshBase<GridView> refreshView) {
-            loadNext();
+        public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+
         }
 
         @Override
-        public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
-            loadNext();
+        public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+
         }
     }
 

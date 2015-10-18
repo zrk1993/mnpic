@@ -30,6 +30,11 @@
             android:label="@string/title_activity_details_classify"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".ui.activity.PhotoDetailsActivity"
+            android:label="@string/title_activity_photo_details"
+            android:theme="@style/PhotoTheme" >
+        </activity>
     </application>
 
 </manifest>

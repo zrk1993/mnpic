@@ -1,59 +1,35 @@
 package com.renkun.mnpic.ui.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.data.Api;
 import com.squareup.picasso.Picasso;
 
-
 /**
- * Created by rk on 2015/10/12.
+ * Created by rk on 2015/10/17.
  */
-public class PicListCursorAdapter extends CursorAdapter {
-    private Resources mResources;
+public class HotListAdapter extends CursorAdapter {
+    private Context mContext;
+    private ListView mListView;
     private LayoutInflater mLayoutInflater;
-    private GridView mGridView;
 
-    public PicListCursorAdapter(Context context, GridView gridView) {
+
+    public HotListAdapter(Context context, ListView listView) {
         super(context, null, false);
-        mResources=context.getResources();
         mLayoutInflater=LayoutInflater.from(context);
-        mGridView=gridView;
+        mListView=listView;
     }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return super.getView(position, convertView, parent);
-    }
-
-//    @Override
-//    public Object getItem(int position) {
-//        if (mDataValid && mCursor != null) {
-//            mCursor.moveToPosition(position);
-//            return mCursor;
-//        } else {
-//            return null;
-//        }
-//    }
-
-    @Override
-    public void changeCursor(Cursor cursor) {
-        super.changeCursor(cursor);
-    }
-
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return mLayoutInflater.inflate(R.layout.fragment_pic_item,null);
+        return mLayoutInflater.inflate(R.layout.fragment_hot_item,null);
     }
 
     @Override
@@ -74,10 +50,9 @@ public class PicListCursorAdapter extends CursorAdapter {
     static class Holder{
 
         ImageView mImageView;
-        TextView mTextView;
+
         public Holder(View view){
             mImageView= (ImageView) view.findViewById(R.id.item_pic);
-            mTextView= (TextView) view.findViewById(R.id.item_text);
         }
     }
 }

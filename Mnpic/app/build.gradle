@@ -25,8 +25,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
-    compile 'com.android.support:recyclerview-v7:+'
     compile project(':pullToRefrash')
-    compile 'com.facebook.fresco:fresco:0.7.0+'
     compile files('libs/gson-2.2.4.jar')
+    compile 'com.commit451:PhotoView:1.2.4'
+    compile files('libs/picasso-2.5.2.jar')
 }

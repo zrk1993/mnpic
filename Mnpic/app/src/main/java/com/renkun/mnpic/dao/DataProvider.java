@@ -72,7 +72,7 @@ public class DataProvider extends ContentProvider {
             long rowId = 0;
             db.beginTransaction();
             try {
-                rowId = db.insert(table, null, values);
+                rowId = db.replace(table, null, values);
                 db.setTransactionSuccessful();
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());

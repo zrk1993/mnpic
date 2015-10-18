@@ -2,7 +2,8 @@ package com.renkun.mnpic.ui.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
+
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  * Time         : 15:32
  * Description  :
  */
-public class FragmentAdapter extends FragmentStatePagerAdapter {
+public class FragmentAdapter extends FragmentPagerAdapter {
     private List<Fragment> mFragments;
     private List<String> mTitles;
 

@@ -2,19 +2,17 @@ package com.renkun.mnpic.ui.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.database.Cursor;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CursorAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.data.Api;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by rk on 2015/10/13.
@@ -33,6 +31,8 @@ public class ClassifyAdapter extends ArrayAdapter {
     public ClassifyAdapter(Context context, int resource) {
         super(context, resource);
         mContext=context;
+        mLayoutInflater = (LayoutInflater) mContext
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -45,28 +45,25 @@ public class ClassifyAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
         if (convertView==null){
-            final LayoutInflater inflater = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.fragment_classify_item, null);
+
+            convertView = mLayoutInflater.inflate(R.layout.fragment_classify_item, null);
             holder=new Holder(convertView);
             convertView.setTag(holder);
         }else {
             holder= (Holder) convertView.getTag();
         }
         holder.mTextView.setText(title[position]);
-        Uri uri = Uri.parse("res://com.renkun.mnpic/" + pic[position]);
-        holder.mImageView.setAspectRatio(0.65f);
-        holder.mImageView.setImageURI(uri);
+        Picasso.with(mContext).load(pic[position]).into(holder.mImageView);
         return convertView;
     }
 
     static class Holder{
 
-        SimpleDraweeView mImageView;
+        ImageView mImageView;
         TextView mTextView;
 
         public Holder(View view){
-            mImageView= (SimpleDraweeView) view.findViewById(R.id.item_pic);
+            mImageView= (ImageView) view.findViewById(R.id.item_pic);
             mTextView= (TextView) view.findViewById(R.id.item_text);
         }
     }

@@ -12,12 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.renkun.mnpic.R;
-import com.renkun.mnpic.dao.DBopenHelper;
 import com.renkun.mnpic.ui.adapter.FragmentAdapter;
 import com.renkun.mnpic.ui.fragment.ClassifyFragment;
 import com.renkun.mnpic.ui.fragment.FeedFragment;
+import com.renkun.mnpic.ui.fragment.HotFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
         //全屏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //初始化，Fresco图片加载库
-        Fresco.initialize(this);
-
         setContentView(R.layout.activity_main);
         //初始化控件和布局
         initView();
@@ -63,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
         //初始化ViewPager的数据集
 
         List<Fragment> fragments = new ArrayList<>();
-        FeedFragment feedFragment=new FeedFragment();
-        fragments.add(feedFragment);
+        HotFragment hotFragment=new HotFragment();
+        fragments.add(hotFragment);
         ClassifyFragment classifyFragment=new ClassifyFragment();
         fragments.add(classifyFragment);
         ClassifyFragment classifyFragment1=new ClassifyFragment();

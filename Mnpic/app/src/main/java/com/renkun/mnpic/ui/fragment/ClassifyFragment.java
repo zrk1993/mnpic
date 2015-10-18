@@ -50,7 +50,7 @@ public class ClassifyFragment extends Fragment  {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent=new Intent(getActivity(), DetailsClassifyActivity.class);
             intent.setPackage(getActivity().getPackageName());
-            intent.putExtra("position",position);
+            intent.putExtra("position",position+1);
             getActivity().startActivity(intent);
         }
     }
