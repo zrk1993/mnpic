@@ -11,8 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.renkun.mnpic.R;
-import com.renkun.mnpic.data.Api;
-import com.squareup.picasso.Picasso;
+import com.renkun.mnpic.util.Screenutil;
 
 /**
  * Created by rk on 2015/10/13.
@@ -22,6 +21,9 @@ public class ClassifyAdapter extends ArrayAdapter {
     private LayoutInflater mLayoutInflater;
     private GridView mGridView;
     private Context mContext;
+    //屏幕宽高
+    private int widthPixels;
+    private int heightPixels;
     //分类图片
     private static final int pic[]={R.mipmap.pic_1,R.mipmap.pic_2,R.mipmap.pic_3,R.mipmap.pic_4,
             R.mipmap.pic_5,R.mipmap.pic_6,R.mipmap.pic_7};
@@ -31,6 +33,9 @@ public class ClassifyAdapter extends ArrayAdapter {
     public ClassifyAdapter(Context context, int resource) {
         super(context, resource);
         mContext=context;
+        //图片宽高比3：4
+        widthPixels= Screenutil.getScreenHeightANDheight(context)[0];
+        heightPixels= (int) (widthPixels*1.4);
         mLayoutInflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -53,7 +58,11 @@ public class ClassifyAdapter extends ArrayAdapter {
             holder= (Holder) convertView.getTag();
         }
         holder.mTextView.setText(title[position]);
-        Picasso.with(mContext).load(pic[position]).fit().into(holder.mImageView);
+        holder.mImageView.setImageResource(pic[position]);
+//        Picasso.with(mContext).load(pic[position])
+//                .resize(widthPixels,heightPixels)
+//                .centerCrop()
+//                .into(holder.mImageView);
         return convertView;
     }
 

@@ -14,8 +14,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sContext = getApplicationContext();
-
-
     }
     public static Context getContext() {
         return sContext;

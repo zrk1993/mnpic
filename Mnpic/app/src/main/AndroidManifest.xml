@@ -28,12 +28,17 @@
         <activity
             android:name=".ui.activity.DetailsClassifyActivity"
             android:label="@string/title_activity_details_classify"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme" >
         </activity>
         <activity
             android:name=".ui.activity.PhotoDetailsActivity"
             android:label="@string/title_activity_photo_details"
             android:theme="@style/PhotoTheme" >
+        </activity>
+        <activity
+            android:name=".ui.activity.SETActivity"
+            android:label="@string/title_activity_set"
+            android:theme="@style/SetTheme" >
         </activity>
     </application>
 

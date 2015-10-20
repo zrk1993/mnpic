@@ -4,20 +4,29 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/colorWhite">
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
         >
-        <ImageButton
+        <ImageView
             android:id="@+id/fabBtn"
             android:layout_width="?attr/actionBarSize"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/flower"
+            android:src="@drawable/flower"
             />
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/title"
+            android:layout_marginLeft="10dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            />
+    </LinearLayout>
     <FrameLayout
         android:id="@+id/fragment_details"
         android:layout_width="match_parent"

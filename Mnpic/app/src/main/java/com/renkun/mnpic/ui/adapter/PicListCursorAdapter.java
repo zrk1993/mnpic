@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.data.Api;
+import com.renkun.mnpic.util.Screenutil;
 import com.squareup.picasso.Picasso;
 
 
@@ -23,12 +24,18 @@ public class PicListCursorAdapter extends CursorAdapter {
     private Resources mResources;
     private LayoutInflater mLayoutInflater;
     private GridView mGridView;
+    //屏幕宽高
+    private int widthPixels;
+    private int heightPixels;
 
     public PicListCursorAdapter(Context context, GridView gridView) {
         super(context, null, false);
         mResources=context.getResources();
         mLayoutInflater=LayoutInflater.from(context);
         mGridView=gridView;
+        //图片宽高比3：4
+        widthPixels= Screenutil.getScreenHeightANDheight(context)[0]/2;
+        heightPixels= (int) (widthPixels*1.4);
     }
 
     @Override
@@ -59,7 +66,10 @@ public class PicListCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         Holder holder=getHolder(view);
-        Picasso.with(context).load(Api.TNPIC_http+cursor.getString(cursor.getColumnIndex("img")))
+        Picasso.with(context)
+                .load(Api.TNPIC_http+cursor.getString(cursor.getColumnIndex("img")))
+                .resize(widthPixels,heightPixels)
+                .centerCrop()
                 .into(holder.mImageView);
 
     }

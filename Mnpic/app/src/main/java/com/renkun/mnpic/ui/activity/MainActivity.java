@@ -1,37 +1,33 @@
 package com.renkun.mnpic.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.ui.adapter.FragmentAdapter;
 import com.renkun.mnpic.ui.fragment.ClassifyFragment;
-import com.renkun.mnpic.ui.fragment.FeedFragment;
 import com.renkun.mnpic.ui.fragment.HotFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    //将ToolBar与TabLayout结合放入AppBarLayout
-    private Toolbar mToolbar;
-    //DrawerLayout中的左侧菜单控件
-    private NavigationView mNavigationView;
-    //DrawerLayout控件
-    private DrawerLayout mDrawerLayout;
+
     //Tab菜单，主界面上面的tab切换菜单
     private TabLayout mTabLayout;
     //v4中的ViewPager控件
     private ViewPager mViewPager;
+    private ImageView fabBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         initView();
     }
     private void initView(){
+        fabBtn= (ImageView) this.findViewById(R.id.fabBtn);
+        fabBtn.setOnClickListener(new fabBtnClicklistener());
         //MainActivity的布局文件中的主要控件初始化
         mTabLayout = (TabLayout) this.findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) this.findViewById(R.id.view_pager);
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         titles.add("精品分类");
         titles.add("我的收藏");
         //初始化TabLayout的title
-        
+        mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(2)));
@@ -74,6 +72,15 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabsFromPagerAdapter(adapter);
     }
+    private class fabBtnClicklistener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent=new Intent(MainActivity.this, SETActivity.class);
+            intent.setPackage(getPackageName());
+            startActivity(intent);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

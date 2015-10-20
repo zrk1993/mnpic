@@ -145,7 +145,7 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
     //Loader的3个方法
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),mUri,null, null, null, null);
+        return new CursorLoader(getActivity(),mUri,null, null, null, "id desc");
 
     }
 

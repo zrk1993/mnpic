@@ -2,16 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingBottom="10dp"
     >
 
     <ImageView
         android:id="@+id/item_pic"
         android:layout_width="match_parent"
-        android:layout_height="175dp"
+        android:layout_height="185dp"
         android:scaleType="centerCrop"
         />
 

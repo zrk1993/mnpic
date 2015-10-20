@@ -141,7 +141,7 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
     //Loader的3个方法
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),mUri,null, "galleryclass=?", new String[]{String.valueOf(PIC_CLASSIFY)}, null);
+        return new CursorLoader(getActivity(),mUri,null, "galleryclass=?", new String[]{String.valueOf(PIC_CLASSIFY)}, "id desc");
 
     }
 
