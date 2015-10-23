@@ -25,11 +25,14 @@ public class ClassifyAdapter extends ArrayAdapter {
     private int widthPixels;
     private int heightPixels;
     //分类图片
-    private static final int pic[]={R.mipmap.pic_1,R.mipmap.pic_2,R.mipmap.pic_3,R.mipmap.pic_4,
+    public static final int pic[]={
+            R.mipmap.pic_1,R.mipmap.pic_2,R.mipmap.pic_3,R.mipmap.pic_4,
+            R.mipmap.pic_5,R.mipmap.pic_6,R.mipmap.pic_7,R.mipmap.pic_1,
+            R.mipmap.pic_2,R.mipmap.pic_3,R.mipmap.pic_4,R.mipmap.pic_4,
             R.mipmap.pic_5,R.mipmap.pic_6,R.mipmap.pic_7};
     //分类标题
-    private static final String title[]={"性感美女","韩日美女","丝袜美腿","美女照片",
-                                            "美女写真","清纯美女","性感车模"};
+    public static final String title[]={"小清新","甜素纯","清纯","校花","唯美","气质","嫩萝莉","时尚",
+                                        "长发","可爱","古典美女","，素颜","非主流","短发","高雅大气很有范"};
     public ClassifyAdapter(Context context, int resource) {
         super(context, resource);
         mContext=context;
@@ -42,7 +45,7 @@ public class ClassifyAdapter extends ArrayAdapter {
 
     @Override
     public int getCount() {
-        return 7;
+        return title.length;
     }
 
 

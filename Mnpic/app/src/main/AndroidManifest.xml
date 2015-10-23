@@ -54,20 +54,28 @@
             android:theme="@style/SetTheme" >
         </activity>
 
-        <!--有米广告配置-->
+        <activity
+            android:name=".ui.activity.WebViewActivity"
+            android:label="@string/title_activity_web_view"
+            android:theme="@style/PhotoTheme" >
+        </activity>
+
+        <!-- 有米广告配置 -->
         <activity
             android:name="net.youmi.android.AdBrowser"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
+
         <service
             android:name="net.youmi.android.AdService"
             android:exported="false" >
         </service>
-        <receiver
-            android:name="net.youmi.android.AdReceiver" >
+
+        <receiver android:name="net.youmi.android.AdReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
+
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
@@ -76,6 +84,7 @@
             android:name="YOUMI_CHANNEL"
             android:value="0" >
         </meta-data>
+
     </application>
 
 </manifest>

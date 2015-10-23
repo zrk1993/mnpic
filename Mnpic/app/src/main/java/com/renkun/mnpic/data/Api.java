@@ -23,4 +23,23 @@ public class Api {
     public static final String apikey= "e0f0fc16b45ab692c8341e91b0c3151c";
     public static final String TianXingUrl="http://apis.baidu.com/txapi/mvtp/meinv";
 
+    /**
+     * 一、通用api
+     * http://image.baidu.com/i?tn=resultjsonavstar&ie=utf-8&word=刘德华&pn=0&rn=60
+     说明：
+     格式为json
+     word为查询的内容
+     pn为第几页
+     rn为一页返回的图片数量
+     用法：大家在浏览器地址栏输入上述地址，回车即可看到返回的图片地址
+
+     二、分类api
+     http://image.baidu.com/channel/listjson?pn=0&rn=30&tag1=明星&tag2=全部&ftags=女明星##内地&ie=utf8
+     *
+     */
+    //5个变量分别为 第几页 每页数量 tag1 tag2 flags
+    public static final String BDApiClassify=
+            "http://image.baidu.com/channel/listjson?pn=%1$d&rn=%2$d&tag1=%3$s&tag2=%4$s&ftags=%5$s&ie=utf8";
+
+
 }

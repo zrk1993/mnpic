@@ -43,21 +43,15 @@ public class DBopenHelper extends SQLiteOpenHelper {
             +"time,"
             +"title)";
     /**
-     * http://www.tngou.net/tnfs/api/news?id=10&rows=10&classify=1提供的 图片内容
-     * 图片分类所对应的表
-     * id是唯一值，根据它，获得图集
-     * galleryclass图集所属类别
-     * time发布时间
+     *
+     * 百度图片
      */
-    public static final String PIC_TNGOU ="create table pic_classify("
+    public static final String PIC_baidu ="create table pic_baidu("
             +"_id integer primary key autoincrement,"
-            +"galleryclass integer,"
             +"id integer unique,"
-            +"img,"
-            +"size integer,"
-            +"count,"
-            +"time,"
-            +"title)";
+            +"image_url,"
+            +"thumbnail_url,"
+            +"thumb_large_url)";
 
     /**
      * 随机的壁纸
@@ -80,7 +74,8 @@ public class DBopenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(PIC_NEWEST);
-        db.execSQL(PIC_TNGOU);
+        db.execSQL(PIC_baidu);
+        db.execSQL(PIC_Random);
 
 
     }

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.ui.adapter.FragmentAdapter;
+import com.renkun.mnpic.ui.fragment.BaiduFragment;
 import com.renkun.mnpic.ui.fragment.ClassifyFragment;
 import com.renkun.mnpic.ui.fragment.CollectFragment;
 import com.renkun.mnpic.ui.fragment.HotFragment;
@@ -61,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
         //初始化TabLayout的title数据集
         List<String> titles = new ArrayList<>();
         titles.add("热门美女");
-        titles.add("随机美女");
         titles.add("精品分类");
+        titles.add("我的收藏");
+
 
         //初始化TabLayout的title
         mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
@@ -73,11 +75,13 @@ public class MainActivity extends AppCompatActivity {
 
         List<Fragment> fragments = new ArrayList<>();
         HotFragment hotFragment=new HotFragment();
-        fragments.add(hotFragment);
-        RandomFragment randomFragment=new RandomFragment();
-        fragments.add(randomFragment);
         ClassifyFragment classifyFragment=new ClassifyFragment();
+        CollectFragment collectFragment=new CollectFragment();
+        fragments.add(hotFragment);
         fragments.add(classifyFragment);
+        fragments.add(collectFragment);
+
+
 
         //创建ViewPager的adapter
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager(), fragments, titles);

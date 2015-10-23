@@ -8,4 +8,5 @@
     <string name="title_activity_details_classify">DetailsClassifyActivity</string>
     <string name="title_activity_photo_details">PhotoDetailsActivity</string>
     <string name="title_activity_set">SETActivity</string>
+    <string name="title_activity_web_view">WebViewActivity</string>
 </resources>

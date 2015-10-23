@@ -8,13 +8,18 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.renkun.mnpic.R;
+import com.renkun.mnpic.ui.fragment.BaiduFragment;
 import com.renkun.mnpic.ui.fragment.FeedFragment;
 
 public class DetailsClassifyActivity extends AppCompatActivity {
-    private  int CLASSIFY;
+    private  String CLASSIFY;
     private TextView title;
-    private static final String titles[]={"性感美女","韩日美女","丝袜美腿","美女照片",
-            "美女写真","清纯美女","性感车模"};
+    //百度图片URL参数
+    private int pn;
+    private int rn;
+    private String tag1;
+    private String tag2;
+    private String flags;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +28,14 @@ public class DetailsClassifyActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_details_classify);
         title= (TextView) findViewById(R.id.title);
-        CLASSIFY=getIntent().getIntExtra("position",1);
-        title.setText(titles[CLASSIFY-1]);
+        CLASSIFY=getIntent().getStringExtra("classify");
+        title.setText(CLASSIFY);
+        //百度图片参数
+        pn=0;
+        rn=15;
+        tag1="美女";
+        tag2="全部";
+        flags=CLASSIFY;
         setDefaultFragment();
 
     }
@@ -32,8 +43,8 @@ public class DetailsClassifyActivity extends AppCompatActivity {
     {
         android.support.v4.app.FragmentManager fm=getSupportFragmentManager();
         FragmentTransaction transaction=fm.beginTransaction();
-        FeedFragment feedFragment=new FeedFragment(CLASSIFY,2);
-        transaction.replace(R.id.fragment_details,feedFragment);
+        BaiduFragment baiduFragment=new BaiduFragment(pn,rn,tag1,tag2,flags);
+        transaction.replace(R.id.fragment_details,baiduFragment);
         transaction.commit();
     }
 

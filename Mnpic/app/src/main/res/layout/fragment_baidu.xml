@@ -2,9 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.renkun.mnpic.ui.fragment.RandomFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+             tools:context="com.renkun.mnpic.ui.fragment.BaiduFragment">
 
     <com.handmark.pulltorefresh.library.PullToRefreshGridView
         android:id="@+id/pull_refresh_grid"

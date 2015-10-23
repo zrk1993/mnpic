@@ -18,11 +18,7 @@ android {
         }
     }
 }
-repositories {
-    maven {
-        url "https://jitpack.io"
-    }
-}
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -34,5 +30,4 @@ dependencies {
     compile 'com.commit451:PhotoView:1.2.4'
     compile files('libs/picasso-2.5.2.jar')
     compile files('libs/YoumiSdk_v5.1.1_2015-08-26.jar')
-    compile 'com.github.recruit-lifestyle:WaveSwipeRefreshLayout:1.2'
 }

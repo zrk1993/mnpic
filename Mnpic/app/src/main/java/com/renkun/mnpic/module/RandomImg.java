@@ -27,7 +27,7 @@ public class RandomImg {
         try {
             JSONObject jsonObject = new JSONObject(s);
             for (int i = 0; i < l; i++) {
-                JSONObject object=jsonObject.getJSONObject(String.valueOf(1));
+                JSONObject object=jsonObject.getJSONObject(String.valueOf(i));
                 Picture_List picture_list=new Picture_List();
                 picture_list.title=object.getString("title");
                 picture_list.description=object.getString("description");
@@ -46,7 +46,7 @@ public class RandomImg {
         try {
             JSONObject jsonObject = new JSONObject(s);
             for (int i = 0; i < l; i++) {
-                JSONObject object=jsonObject.getJSONObject(String.valueOf(1));
+                JSONObject object=jsonObject.getJSONObject(String.valueOf(i));
                 ContentValues values = new ContentValues();
 
                 values.put("title",object.getString("title"));

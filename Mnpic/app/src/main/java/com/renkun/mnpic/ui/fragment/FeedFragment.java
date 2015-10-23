@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,8 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
     private Cursor mCursor;
     //页面图片集，数据库地址
     private Uri mUri;
+
+
 
     public FeedFragment(int classify,int NumColumns) {
         // Required empty public constructor
@@ -141,6 +144,7 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
             public void onResponse(final Response response) throws IOException {
                 //解析字符串
                 String s=response.body().string();
+
                 Gallery jsonBean = OkHttpClientManager
                         .getJsonBean(s, Gallery.class);
                 if (jsonBean.tngou.size()>0){

@@ -2,9 +2,7 @@ package com.renkun.mnpic.ui.fragment;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +13,6 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.renkun.mnpic.R;
-import com.renkun.mnpic.dao.DataProvider;
 import com.renkun.mnpic.ui.activity.DetailsClassifyActivity;
 import com.renkun.mnpic.ui.adapter.ClassifyAdapter;
 
@@ -24,6 +21,8 @@ import net.youmi.android.banner.AdView;
 import net.youmi.android.banner.AdViewListener;
 
 /**
+ *
+ * 分类页面
  * A simple {@link Fragment} subclass.
  */
 public class ClassifyFragment extends Fragment  {
@@ -86,7 +85,7 @@ public class ClassifyFragment extends Fragment  {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent=new Intent(getActivity(), DetailsClassifyActivity.class);
             intent.setPackage(getActivity().getPackageName());
-            intent.putExtra("position",position+1);
+            intent.putExtra("classify",ClassifyAdapter.title[position]);
             getActivity().startActivity(intent);
         }
     }
