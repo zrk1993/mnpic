@@ -59,6 +59,20 @@ public class DBopenHelper extends SQLiteOpenHelper {
             +"time,"
             +"title)";
 
+    /**
+     * 随机的壁纸
+     * 图片分类所对应的表
+     * id是唯一值，根据它，获得图集
+     * galleryclass图集所属类别
+     * time发布时间
+     */
+    public static final String PIC_Random ="create table pic_random("
+            +"_id integer primary key autoincrement,"
+            +"title,"
+            +"url,"
+            +"description,"
+            +"picUrl)";
+
     public DBopenHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
     }

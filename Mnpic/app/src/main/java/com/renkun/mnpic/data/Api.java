@@ -19,4 +19,8 @@ public class Api {
     //取得最新的图片，通过id取得大于该id的图片
     public static final String TNPIC_NEWS=
             "http://www.tngou.net/tnfs/api/news?id=%1$d&rows=%2$d&classify=%3$d";
+    // 天行数据,http://apistore.baidu.com/apiworks/servicedetail/720.html
+    public static final String apikey= "e0f0fc16b45ab692c8341e91b0c3151c";
+    public static final String TianXingUrl="http://apis.baidu.com/txapi/mvtp/meinv";
+
 }

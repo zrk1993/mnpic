@@ -6,16 +6,21 @@ android {
 
     defaultConfig {
         applicationId "com.renkun.mnpic"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+}
+repositories {
+    maven {
+        url "https://jitpack.io"
     }
 }
 
@@ -28,4 +33,6 @@ dependencies {
     compile files('libs/gson-2.2.4.jar')
     compile 'com.commit451:PhotoView:1.2.4'
     compile files('libs/picasso-2.5.2.jar')
+    compile files('libs/YoumiSdk_v5.1.1_2015-08-26.jar')
+    compile 'com.github.recruit-lifestyle:WaveSwipeRefreshLayout:1.2'
 }

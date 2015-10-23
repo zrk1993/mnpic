@@ -3,6 +3,7 @@ package com.renkun.mnpic.ui.adapter;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,11 @@ import android.widget.TextView;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.data.Api;
+import com.renkun.mnpic.util.ColorUtil;
 import com.renkun.mnpic.util.Screenutil;
 import com.squareup.picasso.Picasso;
+
+import java.util.Random;
 
 
 /**
@@ -28,8 +32,10 @@ public class PicListCursorAdapter extends CursorAdapter {
     private int widthPixels;
     private int heightPixels;
 
+
     public PicListCursorAdapter(Context context, GridView gridView) {
         super(context, null, false);
+
         mResources=context.getResources();
         mLayoutInflater=LayoutInflater.from(context);
         mGridView=gridView;
@@ -66,9 +72,11 @@ public class PicListCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         Holder holder=getHolder(view);
+        holder.mImageView.setBackgroundColor(
+                mResources.getColor(ColorUtil.getColor()));
         Picasso.with(context)
-                .load(Api.TNPIC_http+cursor.getString(cursor.getColumnIndex("img")))
-                .resize(widthPixels,heightPixels)
+                .load(Api.TNPIC_http + cursor.getString(cursor.getColumnIndex("img")))
+                .resize(widthPixels, heightPixels)
                 .centerCrop()
                 .into(holder.mImageView);
 

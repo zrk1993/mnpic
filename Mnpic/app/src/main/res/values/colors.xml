@@ -4,11 +4,25 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorTabLayout">#03BCD4</color>
-
-
-    
     <color name="colorWhite">#ffffff</color>
     <color name="colorGray">#44777777</color>
+
+    <color name="color_0">#f69988</color>
+    <color name="color_1">#f48fb1</color>
+    <color name="color_2">#ce93d8</color>
+    <color name="color_3">#b39ddb</color>
+    <color name="color_4">#7986cb</color>
+    <color name="color_5">#91a7ff</color>
+    <color name="color_6">#4f73f7</color>
+    <color name="color_7">#26a69a</color>
+    <color name="color_8">#4abd41</color>
+    <color name="color_9">#9ccc61</color>
+    <color name="color_10">#d4e157</color>
+    <color name="color_11">#ffc107</color>
+    <color name="color_12">#ff9800</color>
+    <color name="color_13">#ff7043</color>
+    <color name="color_14">#8d6e63</color>
+    <color name="color_15">#9e9e9e</color>
 
 
 </resources>

@@ -1,5 +1,6 @@
 package com.renkun.mnpic.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -10,16 +11,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.ui.adapter.FragmentAdapter;
 import com.renkun.mnpic.ui.fragment.ClassifyFragment;
+import com.renkun.mnpic.ui.fragment.CollectFragment;
 import com.renkun.mnpic.ui.fragment.HotFragment;
+import com.renkun.mnpic.ui.fragment.RandomFragment;
+
+import net.youmi.android.spot.SpotManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +42,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //初始化控件和布局
         initView();
+        //初始化有米广告
+        initYOUMI(this);
+    }
+    private void initYOUMI(Context context){
+        SpotManager.getInstance(context).loadSpotAds();
+        SpotManager.getInstance(context).setSpotOrientation(
+                SpotManager.ORIENTATION_PORTRAIT);
+        SpotManager.getInstance(context).setAnimationType(SpotManager.ANIM_ADVANCE);
+        //SpotManager.getInstance(this).showSpotAds(this);
     }
     private void initView(){
         fabBtn= (ImageView) this.findViewById(R.id.fabBtn);
@@ -47,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
         //初始化TabLayout的title数据集
         List<String> titles = new ArrayList<>();
         titles.add("热门美女");
+        titles.add("随机美女");
         titles.add("精品分类");
-        titles.add("我的收藏");
+
         //初始化TabLayout的title
         mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
@@ -59,14 +74,15 @@ public class MainActivity extends AppCompatActivity {
         List<Fragment> fragments = new ArrayList<>();
         HotFragment hotFragment=new HotFragment();
         fragments.add(hotFragment);
+        RandomFragment randomFragment=new RandomFragment();
+        fragments.add(randomFragment);
         ClassifyFragment classifyFragment=new ClassifyFragment();
         fragments.add(classifyFragment);
-        ClassifyFragment classifyFragment1=new ClassifyFragment();
-        fragments.add(classifyFragment1);
 
         //创建ViewPager的adapter
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager(), fragments, titles);
         mViewPager.setAdapter(adapter);
+        mViewPager.setOffscreenPageLimit(3);
         //千万别忘了，关联TabLayout与ViewPager
         //同时也要覆写PagerAdapter的getPageTitle方法，否则Tab没有title
         mTabLayout.setupWithViewPager(mViewPager);
@@ -78,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent=new Intent(MainActivity.this, SETActivity.class);
             intent.setPackage(getPackageName());
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_right_in,R.anim.slide_right_out);
         }
     }
 

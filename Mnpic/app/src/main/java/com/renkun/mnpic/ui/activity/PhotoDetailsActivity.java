@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -23,7 +24,8 @@ public class PhotoDetailsActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private int id;//被点击图片的id,
     private Picture mPicture;
-    private TextView mTextView;
+    private TextView mTextNnm;
+    private TextView mTextTitle;
     private PhotoViewPagerAdapter mPhotoViewPagerAdapter;
 
     @Override
@@ -35,11 +37,14 @@ public class PhotoDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_photo_details);
         mViewPager = (ViewPager) findViewById(R.id.photo_pager);
-        mTextView= (TextView) findViewById(R.id.size);
+        mTextTitle = (TextView) findViewById(R.id.title);
+        mTextNnm = (TextView) findViewById(R.id.size);
         id = getIntent().getIntExtra("id", 1);
+
         loadPhoto();
     }
-    private void loadPhoto(){
+
+    private void loadPhoto() {
         Request request = new Request.Builder()
                 .url(String.format(Api.TNPIC_SHOW, id))
                 .get()
@@ -58,15 +63,34 @@ public class PhotoDetailsActivity extends AppCompatActivity {
                 //解析字符串
                 String s = response.body().string();
                 mPicture = OkHttpClientManager.getJsonBean(s, Picture.class);
-                mPhotoViewPagerAdapter=new PhotoViewPagerAdapter(PhotoDetailsActivity.this,
-                        mPicture);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mViewPager.setAdapter(mPhotoViewPagerAdapter);
-                        mTextView.setText(mPicture.title+mPicture.list.size());
-                    }
-                });
+                if (mPicture != null && mPicture.list.size() > 0) {
+                    mPhotoViewPagerAdapter = new PhotoViewPagerAdapter(PhotoDetailsActivity.this,
+                            mPicture);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mTextTitle.setText(mPicture.title);
+                            mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                                @Override
+                                public void onPageSelected(int position) {
+                                    super.onPageSelected(position);
+                                    mTextNnm.setText(position+1 + "/" + mPicture.size);
+                                }
+                            });
+                            mTextNnm.setText(1 + "/" +mPicture.size);
+                            mViewPager.setAdapter(mPhotoViewPagerAdapter);
+                        }
+                    });
+                } else {
+                   Snackbar.make(getCurrentFocus(),"加载失败",Snackbar.LENGTH_SHORT)
+                           .setAction("返回", new View.OnClickListener() {
+                               @Override
+                               public void onClick(View v) {
+
+                               }
+                           })
+                           .show();
+                }
 
             }
         });

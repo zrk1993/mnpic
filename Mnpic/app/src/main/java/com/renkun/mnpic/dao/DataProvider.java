@@ -131,6 +131,7 @@ public class DataProvider extends ContentProvider {
         int i= Integer.parseInt(uri.getLastPathSegment());
         if (i>0&&i<8)
              table="pic_classify";
+        else if (i>90)table="pic_random";
         else table="pic_newest";
         return table;
     }

@@ -1,7 +1,9 @@
 package com.renkun.mnpic.ui.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +14,12 @@ import android.widget.TextView;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.data.Api;
+import com.renkun.mnpic.util.ColorUtil;
 import com.renkun.mnpic.util.Screenutil;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.Random;
 
 /**
  * Created by rk on 2015/10/17.
@@ -28,14 +32,20 @@ public class HotListAdapter extends CursorAdapter {
     //屏幕宽高
     private int widthPixels;
     private int heightPixels;
+    private Resources mResources;
+
+    private Typeface typeFace;
+
 
     public HotListAdapter(Context context, ListView listView) {
         super(context, null, false);
+        mResources=context.getResources();
         mLayoutInflater=LayoutInflater.from(context);
         mListView=listView;
         //图片宽高比3：4
         widthPixels= Screenutil.getScreenHeightANDheight(context)[0];
         heightPixels= (int) (widthPixels*1.4);
+        typeFace = Typeface.createFromAsset(context.getAssets(), "fonts/cosmicaldisfase.ttf");
     }
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -45,14 +55,17 @@ public class HotListAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         Holder holder=getHolder(view);
-        Picasso.with(context).load(Api.TNPIC_http+cursor.getString(cursor.getColumnIndex("img")))
-                .placeholder(R.mipmap.pic_1)
-                .resize(widthPixels,heightPixels)
+        holder.mImageView.setBackgroundColor(
+                mResources.getColor(ColorUtil.getColor()));
+
+        Picasso.with(context).load(Api.TNPIC_http + cursor.getString(cursor.getColumnIndex("img")))
+                .resize(widthPixels,widthPixels)
                 .centerInside()
                 .into(holder.mImageView);
+        holder.mTextView.setTypeface(typeFace);
         holder.mTextView
                 .setText(
-                        format.format( cursor.getLong(cursor.getColumnIndex("time"))));
+                        format.format(cursor.getLong(cursor.getColumnIndex("time"))));
 
 
 

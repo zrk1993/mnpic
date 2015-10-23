@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,8 +9,34 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_set"
     tools:context="com.renkun.mnpic.ui.activity.SETActivity">
 
-</RelativeLayout>
+    <TextView
+        android:textSize="45sp"
+        android:text="normal 你好 123456"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:typeface="normal"/>
+    <TextView
+        android:textSize="45sp"
+        android:text="sans 你好 123456"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:typeface="sans"/>
+    <TextView
+        android:textSize="45sp"
+        android:text="serif 你好 123456"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:typeface="serif"/>
+    <TextView
+        android:id="@+id/ziti"
+        android:textSize="45sp"
+        android:text="zidingyu 你好 123456"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</LinearLayout>

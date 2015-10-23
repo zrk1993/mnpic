@@ -10,13 +10,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.renkun.mnpic.R;
@@ -70,34 +70,49 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mPullRefreshGridView = (PullToRefreshGridView) inflater.inflate(R.layout.fragment_feed, container, false);
+        View view = inflater.inflate(R.layout.fragment_feed, container, false);
+        initView(view);
+        return view;
+    }
+    private void initView(View view){
+        mPullRefreshGridView= (PullToRefreshGridView) view.findViewById(R.id.pull_refresh_grid);
         mPullRefreshGridView.setOnRefreshListener(new OnGrideRefreshListener());
         mGridView = mPullRefreshGridView.getRefreshableView();
 
-        mPicListCursorAdapter=new PicListCursorAdapter(getActivity(),mGridView);
+        initGrideView();
+        mPicListCursorAdapter=new PicListCursorAdapter(getActivity(), mGridView);
         mGridView.setNumColumns(NumColumns);
         mGridView.setAdapter(mPicListCursorAdapter);
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mCursor.moveToPosition(position);
-                Intent intent=new Intent(getActivity(), PhotoDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), PhotoDetailsActivity.class);
                 intent.setPackage(getActivity().getPackageName());
                 intent.putExtra("id", mCursor.getInt(mCursor.getColumnIndex("id")));
                 startActivity(intent);
 
             }
         });
-
-
-        getLoaderManager().initLoader(0, null, this);
-        //loadFirst();
-        return mPullRefreshGridView;
+    }
+    private void initGrideView(){
+        ILoadingLayout startLabels = mPullRefreshGridView
+                .getLoadingLayoutProxy(true, false);
+        startLabels.setPullLabel("您可劲的拉");// 刚下拉时，显示的提示
+        startLabels.setRefreshingLabel("正在载入...");// 刷新时
+        startLabels.setReleaseLabel("好嘞，松开载入更多");// 下来达到一定距离时，显示的提示
+        //设置mPullRefreshGridView上啦
+        ILoadingLayout endLabels = mPullRefreshGridView.getLoadingLayoutProxy(
+                false, true);
+        endLabels.setPullLabel("~已经是最后一张了~");// 刚下拉时，显示的提示
+        endLabels.setRefreshingLabel("~已经是最后一张了,放开返回顶部...");// 刷新时
+        endLabels.setReleaseLabel("~已经是最后一张了,放开返回顶部...");// 下来达到一定距离时，显示的提示
     }
 
 
@@ -117,7 +132,6 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
                 .addHeader("accept", "application/json")
                 .addHeader("content-type", "application/json")
                 .build();
-        Log.d("http",request.urlString());
         OkHttpClientManager.getInstance().getOkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
@@ -127,13 +141,29 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
             public void onResponse(final Response response) throws IOException {
                 //解析字符串
                 String s=response.body().string();
-                final Gallery jsonBean = OkHttpClientManager
+                Gallery jsonBean = OkHttpClientManager
                         .getJsonBean(s, Gallery.class);
-                Log.d("http", jsonBean.tngou.size() + "///" + s);
-                getActivity().getContentResolver()
-                        .bulkInsert(mUri,
-                                Gallery.getContentValues(jsonBean));
-                MAX_ID_NUM=jsonBean.tngou.get(jsonBean.tngou.size()-1).id;
+                if (jsonBean.tngou.size()>0){
+                    getActivity().getContentResolver()
+                            .bulkInsert(mUri,
+                                    Gallery.getContentValues(jsonBean));
+                    MAX_ID_NUM=jsonBean.tngou.get(jsonBean.tngou.size()-1).id;
+                }else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPullRefreshGridView.onRefreshComplete();
+                            Snackbar.make(getView(),"已经加载完了，等小编更新。。",Snackbar.LENGTH_SHORT)
+                                    .setAction("好吧", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                        }
+                                    })
+                                    .show();
+                        }
+                    });
+                }
+
             }
         });
 
@@ -149,14 +179,8 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursor=data;
         mPicListCursorAdapter.changeCursor(data);
+        if (data.getCount()<3)loadFirst();
         mPullRefreshGridView.onRefreshComplete();
-        Snackbar.make(getView(),data.getCount()+"",Snackbar.LENGTH_LONG)
-                .setAction("yes", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }).show();
     }
 
     @Override
@@ -168,12 +192,13 @@ public class FeedFragment extends Fragment implements LoaderManager.LoaderCallba
     private class OnGrideRefreshListener implements PullToRefreshBase.OnRefreshListener2<GridView> {
         @Override
         public void onPullDownToRefresh(final PullToRefreshBase<GridView> refreshView) {
-            loadNext();
+            loadFirst();
         }
 
         @Override
         public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
-            loadNext();
+            mGridView.setSelection(0);
+            refreshView.onRefreshComplete();
         }
     }
 
