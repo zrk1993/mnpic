@@ -14,9 +14,9 @@ public class BDpic {
     public int totalNum;
     public int start_index;
     public int return_number;
-    public List<DATA> data;
+    public ArrayList<DATA> data;
     //图片信息
-    static class DATA {
+    public static class DATA {
         public long id;
         public String image_url;//原图
 //        public int image_width;

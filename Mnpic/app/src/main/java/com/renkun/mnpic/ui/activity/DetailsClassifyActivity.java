@@ -1,6 +1,7 @@
 package com.renkun.mnpic.ui.activity;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -8,12 +9,13 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.renkun.mnpic.R;
+import com.renkun.mnpic.dao.DataProvider;
 import com.renkun.mnpic.ui.fragment.BaiduFragment;
-import com.renkun.mnpic.ui.fragment.FeedFragment;
 
 public class DetailsClassifyActivity extends AppCompatActivity {
     private  String CLASSIFY;
     private TextView title;
+    private Uri mUri=Uri.parse(DataProvider.SCHEME + DataProvider.AUTHORITY + String.valueOf(BaiduFragment.BAIDU));
     //百度图片URL参数
     private int pn;
     private int rn;
@@ -32,10 +34,10 @@ public class DetailsClassifyActivity extends AppCompatActivity {
         title.setText(CLASSIFY);
         //百度图片参数
         pn=0;
-        rn=15;
+        rn=2;
         tag1="美女";
-        tag2="全部";
-        flags=CLASSIFY;
+        tag2=CLASSIFY;
+        flags="全部";
         setDefaultFragment();
 
     }

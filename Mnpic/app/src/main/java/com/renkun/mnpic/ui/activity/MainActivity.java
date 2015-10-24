@@ -15,17 +15,14 @@ import android.widget.ImageView;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.ui.adapter.FragmentAdapter;
-import com.renkun.mnpic.ui.fragment.BaiduFragment;
 import com.renkun.mnpic.ui.fragment.ClassifyFragment;
 import com.renkun.mnpic.ui.fragment.CollectFragment;
 import com.renkun.mnpic.ui.fragment.HotFragment;
-import com.renkun.mnpic.ui.fragment.RandomFragment;
 
 import net.youmi.android.spot.SpotManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 

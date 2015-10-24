@@ -1,15 +1,10 @@
 package com.renkun.mnpic.ui.fragment;
 
 
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,18 +17,19 @@ import com.renkun.mnpic.dao.DataProvider;
 import com.renkun.mnpic.data.Api;
 import com.renkun.mnpic.data.OkHttpClientManager;
 import com.renkun.mnpic.module.BDpic;
-import com.renkun.mnpic.ui.adapter.BDCursorAdapter;
+import com.renkun.mnpic.ui.adapter.BDArrayAdapter;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
  * A simple {@link Fragment} subclass.
  */
-public class BaiduFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class BaiduFragment extends Fragment {
     //百度图片URL参数
     private int pn;
     private int rn;
@@ -43,7 +39,11 @@ public class BaiduFragment extends Fragment implements LoaderManager.LoaderCallb
 
     private GridView mGridView;
     private PullToRefreshGridView mPullRefreshGridView;
-    private BDCursorAdapter mBDCursorAdapter;
+    private BDArrayAdapter mBDArrayAdapter;
+
+    public ArrayList<BDpic.DATA> data=new ArrayList<>();
+    //true是上拉  false是下拉
+    private boolean freshFlag;
 
     Uri mUri;
     public static int BAIDU=234;
@@ -63,7 +63,6 @@ public class BaiduFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLoaderManager().initLoader(BAIDU, null, this);
     }
 
     @Override
@@ -79,36 +78,21 @@ public class BaiduFragment extends Fragment implements LoaderManager.LoaderCallb
         mGridView.setNumColumns(2);
         mPullRefreshGridView.setOnRefreshListener(new OnGrideRefreshListener());
 
-        mBDCursorAdapter=new BDCursorAdapter(getActivity(),mGridView);
-        mGridView.setAdapter(mBDCursorAdapter);
+        mBDArrayAdapter=new BDArrayAdapter(getActivity(),R.layout.fragment_baidu);
+        mGridView.setAdapter(mBDArrayAdapter);
+        loadFirst();
     }
     private void loadFirst(){
+        pn=0;
         String url= String.format(Api.BDApiClassify, pn,rn,tag1,tag2,flags);
+        freshFlag=false;
         loadData(url);
     }
     private void loadnext(){
-        String url= String.format(Api.BDApiClassify, ++pn,rn,tag1,tag2,flags);
+        pn++;
+        String url= String.format(Api.BDApiClassify, pn, rn, tag1, tag2, flags);
+        freshFlag=true;
         loadData(url);
-    }
-
-
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(),mUri,null, null, null, null);
-
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mBDCursorAdapter.changeCursor(data);
-        mPullRefreshGridView.onRefreshComplete();
-        if (data.getCount()<3)loadFirst();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mBDCursorAdapter.changeCursor(null);
     }
 
     //Gride的刷新监听类
@@ -124,7 +108,7 @@ public class BaiduFragment extends Fragment implements LoaderManager.LoaderCallb
         }
     }
 
-    private void loadData(String url) {
+    private  void loadData(String url) {
         final Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -134,38 +118,45 @@ public class BaiduFragment extends Fragment implements LoaderManager.LoaderCallb
         OkHttpClientManager.getInstance().getOkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullRefreshGridView.onRefreshComplete();
+                        Snackbar.make(getView(),"网络有点问题",Snackbar.LENGTH_SHORT).show();
+                    }
+                });
             }
             @Override
             public void onResponse( Response response) throws IOException {
                 //解析字符串
                 String s=response.body().string();
-                Log.d("bd",s);
-
-                BDpic bDpic = OkHttpClientManager
+                BDpic bDpic= OkHttpClientManager
                         .getJsonBean(s, BDpic.class);
-                if (bDpic.data.size()>0){
-                    getActivity().getContentResolver()
-                            .bulkInsert(mUri,
-                                    BDpic.getContentValues(bDpic));
-                }else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mPullRefreshGridView.onRefreshComplete();
-                            Snackbar.make(getView(), "已经加载完了，等小编更新。。", Snackbar.LENGTH_SHORT)
-                                    .setAction("好吧", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                        }
-                                    })
-                                    .show();
-                        }
-                    });
+                if (!CheckData(bDpic))return;
+                if (freshFlag){
+                    data.addAll(bDpic.data);}
+                else data=bDpic.data;
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mBDArrayAdapter.data=data;
+                        mBDArrayAdapter.notifyDataSetChanged();
+                        mPullRefreshGridView.onRefreshComplete();
+                    }
+                });
                 }
 
-            }
         });
 
+    }
+
+    public boolean CheckData(BDpic bDpic){
+        if (bDpic==null||bDpic.data.size()<1)return false;
+
+        for (BDpic.DATA data:bDpic.data){
+            if (data.id==0)bDpic.data.remove(data);
+        }
+        return true;
     }
 }

@@ -45,7 +45,7 @@ public class ClassifyFragment extends Fragment  {
         mGridView.setNumColumns(3);
         mGridView.setAdapter(mClassifyAdapter);
         mGridView.setOnItemClickListener(new GrideItemClickedListener());
-        initAdview(view);
+        //initAdview(view);
         loadData();
         return view;
     }

@@ -54,12 +54,6 @@
             android:theme="@style/SetTheme" >
         </activity>
 
-        <activity
-            android:name=".ui.activity.WebViewActivity"
-            android:label="@string/title_activity_web_view"
-            android:theme="@style/PhotoTheme" >
-        </activity>
-
         <!-- 有米广告配置 -->
         <activity
             android:name="net.youmi.android.AdBrowser"
