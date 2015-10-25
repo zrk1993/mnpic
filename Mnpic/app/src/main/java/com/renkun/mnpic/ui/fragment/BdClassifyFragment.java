@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.ui.activity.DetailsClassifyActivity;
-import com.renkun.mnpic.ui.adapter.ClassifyAdapter;
+import com.renkun.mnpic.ui.adapter.BdClassifyAdapter;
 
 import net.youmi.android.banner.AdSize;
 import net.youmi.android.banner.AdView;
@@ -25,12 +25,12 @@ import net.youmi.android.banner.AdViewListener;
  * 分类页面
  * A simple {@link Fragment} subclass.
  */
-public class ClassifyFragment extends Fragment  {
+public class BdClassifyFragment extends Fragment  {
 
     private GridView mGridView;
-    private ClassifyAdapter mClassifyAdapter;
+    private BdClassifyAdapter mClassifyAdapter;
 
-    public ClassifyFragment() {
+    public BdClassifyFragment() {
         // Required empty public constructor
     }
 
@@ -41,7 +41,7 @@ public class ClassifyFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_classify, container, false);
         mGridView= (GridView) view.findViewById(R.id.classify_gride);
-        mClassifyAdapter=new ClassifyAdapter(getActivity(),R.layout.fragment_classify_item);
+        mClassifyAdapter=new BdClassifyAdapter(getActivity(),R.layout.fragment_classify_item);
         mGridView.setNumColumns(3);
         mGridView.setAdapter(mClassifyAdapter);
         mGridView.setOnItemClickListener(new GrideItemClickedListener());
@@ -85,7 +85,7 @@ public class ClassifyFragment extends Fragment  {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent=new Intent(getActivity(), DetailsClassifyActivity.class);
             intent.setPackage(getActivity().getPackageName());
-            intent.putExtra("classify",ClassifyAdapter.title[position]);
+            intent.putExtra("classify", BdClassifyAdapter.title[position]);
             getActivity().startActivity(intent);
         }
     }

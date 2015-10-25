@@ -15,9 +15,10 @@ import android.widget.ImageView;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.ui.adapter.FragmentAdapter;
-import com.renkun.mnpic.ui.fragment.ClassifyFragment;
+import com.renkun.mnpic.ui.fragment.BdClassifyFragment;
 import com.renkun.mnpic.ui.fragment.CollectFragment;
 import com.renkun.mnpic.ui.fragment.HotFragment;
+import com.renkun.mnpic.ui.fragment.TgClassifyFragment;
 
 import net.youmi.android.spot.SpotManager;
 
@@ -72,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
 
         List<Fragment> fragments = new ArrayList<>();
         HotFragment hotFragment=new HotFragment();
-        ClassifyFragment classifyFragment=new ClassifyFragment();
-        CollectFragment collectFragment=new CollectFragment();
+        BdClassifyFragment classifyFragment=new BdClassifyFragment();
+        TgClassifyFragment tgClassifyFragment=new TgClassifyFragment();
         fragments.add(hotFragment);
+        fragments.add(tgClassifyFragment);
         fragments.add(classifyFragment);
-        fragments.add(collectFragment);
 
 
 

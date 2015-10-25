@@ -53,6 +53,10 @@
             android:label="@string/title_activity_set"
             android:theme="@style/SetTheme" >
         </activity>
+        <activity android:name=".ui.activity.TgDetailsClassifyActivity"
+                  android:label="tiangou_fenglei"
+                  android:theme="@style/AppTheme"
+                  />
 
         <!-- 有米广告配置 -->
         <activity

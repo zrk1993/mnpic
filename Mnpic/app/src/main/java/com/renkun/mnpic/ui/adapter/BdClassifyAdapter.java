@@ -16,7 +16,7 @@ import com.renkun.mnpic.util.Screenutil;
 /**
  * Created by rk on 2015/10/13.
  */
-public class ClassifyAdapter extends ArrayAdapter {
+public class BdClassifyAdapter extends ArrayAdapter {
     private Resources mResources;
     private LayoutInflater mLayoutInflater;
     private GridView mGridView;
@@ -33,7 +33,7 @@ public class ClassifyAdapter extends ArrayAdapter {
     //分类标题
     public static final String title[]={"小清新","甜素纯","清纯","校花","唯美","气质","嫩萝莉","时尚",
                                         "长发","可爱","古典美女","素颜","非主流","短发","高雅大气很有范"};
-    public ClassifyAdapter(Context context, int resource) {
+    public BdClassifyAdapter(Context context, int resource) {
         super(context, resource);
         mContext=context;
         //图片宽高比3：4

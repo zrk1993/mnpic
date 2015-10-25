@@ -13,17 +13,6 @@ public class DBopenHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "mnpic.db";
     // 数据库版本
     private static final int VERSION = 1;
-//    /**
-//     * 图片分类
-//     */
-//    public static final String CREATE_GALLERYCLASS ="create table pic_classification ("
-//            +"_id integer primary key autoincrement,"
-//            +"description,"
-//            +"id,"
-//            +"keywords,"
-//            +"name,"
-//            +"seq,"
-//            +"title)";
 
     /**
      * 最新图集的表
@@ -60,12 +49,15 @@ public class DBopenHelper extends SQLiteOpenHelper {
      * galleryclass图集所属类别
      * time发布时间
      */
-    public static final String PIC_Random ="create table pic_random("
+    public static final String PIC_TgClassify ="create table pic_classify("
             +"_id integer primary key autoincrement,"
-            +"title,"
-            +"url,"
-            +"description,"
-            +"picUrl)";
+            +"galleryclass integer,"
+            +"id integer unique,"
+            +"img,"
+            +"size integer,"
+            +"count,"
+            +"time,"
+            +"title)";
 
     public DBopenHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -75,7 +67,7 @@ public class DBopenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(PIC_NEWEST);
         db.execSQL(PIC_baidu);
-        db.execSQL(PIC_Random);
+        db.execSQL(PIC_TgClassify);
 
 
     }
