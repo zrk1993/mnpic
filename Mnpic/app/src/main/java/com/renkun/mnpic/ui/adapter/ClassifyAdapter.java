@@ -32,7 +32,7 @@ public class ClassifyAdapter extends ArrayAdapter {
             R.mipmap.pic_5,R.mipmap.pic_6,R.mipmap.pic_7};
     //分类标题
     public static final String title[]={"小清新","甜素纯","清纯","校花","唯美","气质","嫩萝莉","时尚",
-                                        "长发","可爱","古典美女","，素颜","非主流","短发","高雅大气很有范"};
+                                        "长发","可爱","古典美女","素颜","非主流","短发","高雅大气很有范"};
     public ClassifyAdapter(Context context, int resource) {
         super(context, resource);
         mContext=context;

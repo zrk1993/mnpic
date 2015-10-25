@@ -34,7 +34,6 @@ public class PhotoDetailsActivity extends AppCompatActivity {
         //全屏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_photo_details);
         mViewPager = (ViewPager) findViewById(R.id.photo_pager);
         mTextTitle = (TextView) findViewById(R.id.title);

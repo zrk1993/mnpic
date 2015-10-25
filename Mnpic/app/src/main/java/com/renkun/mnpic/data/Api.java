@@ -39,7 +39,7 @@ public class Api {
      */
     //5个变量分别为 第几页 每页数量 tag1 tag2 flags
     public static final String BDApiClassify=
-            "http://image.baidu.com/channel/listjson?pn=%1$d&rn=%2$d&tag1=%3$s&tag2=%4$s&ftags=%5$s&ie=utf8";
+            "http://image.baidu.com/channel/listjson?pn=%1$d&rn=%2$d&tag1=%3$s&tag2=%4$s&ie=utf8";
 
 
 }

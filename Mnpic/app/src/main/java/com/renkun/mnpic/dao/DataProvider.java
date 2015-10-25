@@ -10,8 +10,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
-import com.renkun.mnpic.ui.fragment.BaiduFragment;
-
 /**
  * Created by rk on 2015/10/10.
  */
@@ -137,7 +135,6 @@ public class DataProvider extends ContentProvider {
         if (i>0&&i<8)
              table="pic_classify";
         else if (i==90)table="pic_random";
-        else if (i== BaiduFragment.BAIDU)table="pic_baidu";
         else    table="pic_newest";
         return table;
     }
