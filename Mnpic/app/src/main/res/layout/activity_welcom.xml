@@ -36,7 +36,7 @@
 
             <TextView
                 android:gravity="center_horizontal"
-                android:text="by renkun 20151022"
+                android:text="by 20151022"
                 android:layout_width="match_parent"
                 android:layout_height="30dip"
                 android:layout_alignParentBottom="true"/>

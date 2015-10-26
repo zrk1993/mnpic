@@ -41,44 +41,15 @@ public class BdClassifyFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_classify, container, false);
         mGridView= (GridView) view.findViewById(R.id.classify_gride);
-        mClassifyAdapter=new BdClassifyAdapter(getActivity(),R.layout.fragment_classify_item);
+        mClassifyAdapter=new BdClassifyAdapter(getActivity(),R.layout.fragment_bd_classify_item);
         mGridView.setNumColumns(3);
         mGridView.setAdapter(mClassifyAdapter);
         mGridView.setOnItemClickListener(new GrideItemClickedListener());
-        //initAdview(view);
+
         loadData();
         return view;
     }
-    private void initAdview(View view){
-        // 实例化广告条
-        AdView adView = new AdView(getActivity(), AdSize.FIT_SCREEN);
-        adView.setAdListener(new AdViewListener() {
 
-            @Override
-            public void onSwitchedAd(AdView adView) {
-                // 切换广告并展示
-                Log.d("youmisdk", "切换广告并展示");
-
-            }
-
-            @Override
-            public void onReceivedAd(AdView adView) {
-                // 请求广告成功
-                Log.d("youmisdk", "展示成功");
-            }
-
-            @Override
-            public void onFailedToReceivedAd(AdView adView) {
-                Log.d("youmisdk", "展示失败");
-            }
-        });
-
-        // 获取要嵌入广告条的布局
-        LinearLayout adLayout=(LinearLayout)view.findViewById(R.id.adLayout);
-
-        // 将广告条加入到布局中
-        adLayout.addView(adView);
-    }
     private class GrideItemClickedListener implements AdapterView.OnItemClickListener{
 
         @Override

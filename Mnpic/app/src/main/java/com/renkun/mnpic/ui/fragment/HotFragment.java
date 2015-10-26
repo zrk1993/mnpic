@@ -39,7 +39,7 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
 
     private int NumColumns = 1;
     private int PIC_CLASSIFY = 0;//图片类别
-    private int PIC_ROWS = 3;//图片条数
+    private int PIC_ROWS = 7;//图片条数
     private int PIC_PAGE = 1;//图片分页
     private String MIN_ID;//当前数据里保存的该类目的图片最小id,所对应的Preference索引
     //MAX_ID所对应的Preference索引的值
@@ -110,7 +110,9 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
             Intent intent = new Intent(getActivity(), PhotoDetailsActivity.class);
             intent.setPackage(getActivity().getPackageName());
             intent.putExtra("id", mCursor.getInt(mCursor.getColumnIndex("id")));
-            startActivity(intent);
+            intent.putExtra("size", mCursor.getInt(mCursor.getColumnIndex("size")));
+            intent.putExtra("title", mCursor.getInt(mCursor.getColumnIndex("title")));
+            getActivity().startActivity(intent);
         }
     }
 
@@ -136,7 +138,7 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
         OkHttpClientManager.getInstance().getOkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-
+                Snackbar.make(getView(),"网络有点问题",Snackbar.LENGTH_SHORT).show();
             }
 
             @Override
@@ -162,8 +164,7 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
                                         @Override
                                         public void onClick(View v) {
                                         }
-                                    })
-                                    .show();
+                                    }).show();
                         }
                     });
                 }
@@ -184,13 +185,6 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
         mCursor = data;
         mHotListAdapter.changeCursor(data);
         mPullRefreshListView.onRefreshComplete();
-        Snackbar.make(getView(), data.getCount() + "", Snackbar.LENGTH_LONG)
-                .setAction("yes", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }).show();
     }
 
     @Override

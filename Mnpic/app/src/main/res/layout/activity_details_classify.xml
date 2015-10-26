@@ -14,9 +14,11 @@
         >
         <ImageView
             android:id="@+id/fabBtn"
+            android:clickable="true"
             android:layout_width="?attr/actionBarSize"
             android:layout_height="match_parent"
             android:src="@drawable/flower"
+            android:background="@drawable/click_color"
             />
         <TextView
             android:id="@+id/title"
@@ -26,6 +28,30 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             />
+        <LinearLayout
+            android:id="@+id/img_but"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/but_collect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/click_color"
+                android:src="@drawable/ic_collect_r"/>
+            <ImageButton
+                android:id="@+id/set_wrallper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/click_color"
+                android:src="@drawable/ic_wallpaper_red"/>
+        </LinearLayout>
     </LinearLayout>
     <ImageView
         android:layout_width="match_parent"

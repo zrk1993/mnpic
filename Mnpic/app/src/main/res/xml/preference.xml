@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <PreferenceCategory
+        android:title="常规"
+        >
+        <Preference
+            android:key="Collection"
+            android:title="我的收藏"
+            android:defaultValue="false"/>
+        <Preference
+            android:key="Cache"
+            android:title="清除缓存"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="应用"
+        >
+        <Preference
+            android:key="About"
+            android:title="关于"
+            android:defaultValue="false"/>
+        <Preference
+            android:key="Edition"
+            android:title="版本"
+            android:defaultValue="false"/>
+        <Preference
+            android:key="Statement"
+            android:title="声明"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="反馈"
+        >
+        <Preference
+            android:key="Feedback"
+            android:title="意见反馈"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title=""
+        >
+        <Preference
+            android:key="SignOut"
+            android:title="返回"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+</PreferenceScreen>

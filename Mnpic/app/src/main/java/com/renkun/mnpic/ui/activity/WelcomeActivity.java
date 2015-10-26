@@ -42,7 +42,7 @@ public class WelcomeActivity extends Activity {
         // 第二个参数传入目标activity，或者传入null，改为setIntent传入跳转的intent
         splashView = new SplashView(context, null);
         // 设置是否显示倒数
-        splashView.setShowReciprocal(false);
+        splashView.setShowReciprocal(true);
         // 隐藏关闭按钮
         splashView.hideCloseBtn(false);
 

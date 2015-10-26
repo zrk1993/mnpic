@@ -51,7 +51,7 @@ public class TgClassifyAdapter extends ArrayAdapter {
         Holder holder;
         if (convertView==null){
 
-            convertView = mLayoutInflater.inflate(R.layout.fragment_classify_item, null);
+            convertView = mLayoutInflater.inflate(R.layout.fragment_tg_classify_item, null);
             holder=new Holder(convertView);
             convertView.setTag(holder);
         }else {

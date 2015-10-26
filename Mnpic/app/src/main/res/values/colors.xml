@@ -7,6 +7,9 @@
     <color name="colorWhite">#f5f5f5</color>
     <color name="colorGray">#44777777</color>
     <color name="colorLine">#ccc</color>
+	
+	<color name="color">#fd6767</color>
+
 
     <color name="color_0">#f69988</color>
     <color name="color_1">#f48fb1</color>

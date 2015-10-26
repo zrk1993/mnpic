@@ -1,7 +1,11 @@
 package com.renkun.mnpic;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -9,13 +13,16 @@ import android.content.Context;
  */
 public class App extends Application {
     private static Context sContext;
+    private List<Activity> activitys = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
         sContext = getApplicationContext();
+        activitys = new LinkedList<Activity>();
     }
     public static Context getContext() {
         return sContext;
     }
+
 }

@@ -11,21 +11,20 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <RelativeLayout
+        android:id="@+id/bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true">
-
         <ImageView
             android:id="@+id/fabBtn"
             android:layout_width="?attr/actionBarSize"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_margin="5dp"
             android:clickable="true"
             android:src="@drawable/btn_back_normal"
+            android:background="@drawable/click_color"
             />
-
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
@@ -33,14 +32,40 @@
             android:layout_centerHorizontal="true"
             android:gravity="fill"
             android:maxLength="10"/>
-
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/but_collect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/click_color"
+                android:src="@drawable/ic_collect"/>
+            <ImageButton
+                android:id="@+id/set_wrallper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/click_color"
+                android:src="@drawable/ic_wallpaper"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
         <TextView
             android:id="@+id/size"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:gravity="fill"
+            android:gravity="center"
+            android:layout_centerInParent="true"
             />
     </RelativeLayout>
 

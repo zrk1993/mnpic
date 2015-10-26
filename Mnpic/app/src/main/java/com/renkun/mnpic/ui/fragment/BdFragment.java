@@ -1,6 +1,8 @@
 package com.renkun.mnpic.ui.fragment;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
@@ -28,7 +31,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- *
  * A simple {@link Fragment} subclass.
  */
 public class BdFragment extends Fragment {
@@ -39,14 +41,14 @@ public class BdFragment extends Fragment {
     private String tag2;
     private String flags;
 
-    private FragmentActivity mActivity;
+    private DetailsClassifyActivity mActivity;
 
 
     private GridView mGridView;
     private PullToRefreshGridView mPullRefreshGridView;
     private BDArrayAdapter mBDArrayAdapter;
 
-    public ArrayList<BDpic.DATA> data=new ArrayList<>();
+    public ArrayList<BDpic.DATA> data = new ArrayList<>();
     //true是上拉  false是下拉
     private boolean freshFlag;
 
@@ -57,39 +59,43 @@ public class BdFragment extends Fragment {
         this.tag2 = tag2;
         this.flags = flags;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivity=getActivity();
+        mActivity = (DetailsClassifyActivity) getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_bd, container, false);
+        View view = inflater.inflate(R.layout.fragment_bd, container, false);
         initView(view);
         return view;
     }
-    private void initView(View view){
-        mPullRefreshGridView= (PullToRefreshGridView) view.findViewById(R.id.pull_refresh_grid);
+
+    private void initView(View view) {
+        mPullRefreshGridView = (PullToRefreshGridView) view.findViewById(R.id.pull_refresh_grid);
         mGridView = mPullRefreshGridView.getRefreshableView();
         mGridView.setNumColumns(2);
         mPullRefreshGridView.setOnRefreshListener(new OnGrideRefreshListener());
         mGridView.setOnItemClickListener(new MyOnItemClickListener());
-        mBDArrayAdapter=new BDArrayAdapter(getActivity(),R.layout.fragment_bd);
+        mBDArrayAdapter = new BDArrayAdapter(getActivity(), R.layout.fragment_bd);
         mGridView.setAdapter(mBDArrayAdapter);
         loadFirst();
     }
-    private void loadFirst(){
-        pn=0;
-        String url= String.format(Api.BDApiClassify, pn,rn,tag1,tag2);
-        freshFlag=false;
+
+    private void loadFirst() {
+        pn = 0;
+        String url = String.format(Api.BDApiClassify, pn, rn, tag1, tag2);
+        freshFlag = false;
         loadData(url);
     }
-    private void loadnext(){
-        pn+=5;
-        String url= String.format(Api.BDApiClassify, pn, rn, tag1, tag2);
-        freshFlag=true;
+
+    private void loadnext() {
+        pn += 5;
+        String url = String.format(Api.BDApiClassify, pn, rn, tag1, tag2);
+        freshFlag = true;
         loadData(url);
     }
 
@@ -105,18 +111,19 @@ public class BdFragment extends Fragment {
             loadnext();
         }
     }
-    private class  MyOnItemClickListener  implements AdapterView.OnItemClickListener{
+
+    private class MyOnItemClickListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            DetailsClassifyActivity detailsClassifyActivity=(DetailsClassifyActivity)getActivity();
+            DetailsClassifyActivity detailsClassifyActivity = (DetailsClassifyActivity) getActivity();
             detailsClassifyActivity
-                    .switchContent(detailsClassifyActivity.mContent,new BdFragmentClik(data,position));
+                    .switchContent(detailsClassifyActivity.mContent, new BdFragmentClik(data, position));
         }
     }
 
-    private  void loadData(String url) {
-        Log.d("bd",url);
+    private void loadData(String url) {
+        Log.d("bd", url);
         final Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -130,40 +137,40 @@ public class BdFragment extends Fragment {
                     @Override
                     public void run() {
                         mPullRefreshGridView.onRefreshComplete();
-                        Snackbar.make(getView(),"网络有点问题",Snackbar.LENGTH_SHORT).show();
-                    }
+                        Toast.makeText(getActivity(),"网络有点问题",Toast.LENGTH_LONG).show();                    }
                 });
             }
+
             @Override
-            public void onResponse( Response response) throws IOException {
+            public void onResponse(Response response) throws IOException {
                 //解析字符串
-                String s=response.body().string();
-                BDpic bDpic= OkHttpClientManager
+                String s = response.body().string();
+                BDpic bDpic = OkHttpClientManager
                         .getJsonBean(s, BDpic.class);
-                if (!CheckData(bDpic))return;
-                if (freshFlag){
-                    data.addAll(bDpic.data);}
-                else data=bDpic.data;
+                if (!CheckData(bDpic)) return;
+                if (freshFlag) {
+                    data.addAll(bDpic.data);
+                } else data = bDpic.data;
 
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mBDArrayAdapter.data=data;
+                        mBDArrayAdapter.data = data;
                         mBDArrayAdapter.notifyDataSetChanged();
                         mPullRefreshGridView.onRefreshComplete();
                     }
                 });
-                }
+            }
 
         });
 
     }
 
-    public boolean CheckData(BDpic bDpic){
-        if (bDpic==null||bDpic.data.size()<1)return false;
+    public boolean CheckData(BDpic bDpic) {
+        if (bDpic == null || bDpic.data.size() < 1) return false;
 
-        for (BDpic.DATA data:bDpic.data){
-            if (data.id==0)bDpic.data.remove(data);
+        for (BDpic.DATA data : bDpic.data) {
+            if (data.id == 0) bDpic.data.remove(data);
         }
         return true;
     }

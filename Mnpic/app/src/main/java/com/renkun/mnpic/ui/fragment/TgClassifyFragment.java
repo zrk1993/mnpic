@@ -33,7 +33,7 @@ public class TgClassifyFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_classify, container, false);
         mGridView= (GridView) view.findViewById(R.id.classify_gride);
-        mClassifyAdapter=new TgClassifyAdapter(getActivity(),R.layout.fragment_classify_item);
+        mClassifyAdapter=new TgClassifyAdapter(getActivity(),R.layout.fragment_tg_classify_item);
         mGridView.setNumColumns(2);
         mGridView.setAdapter(mClassifyAdapter);
         mGridView.setOnItemClickListener(new GrideItemClickedListener());

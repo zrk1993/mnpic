@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.renkun.mnpic.R;
 import com.renkun.mnpic.data.Api;
 import com.renkun.mnpic.module.Picture;
 import com.squareup.picasso.MemoryPolicy;
@@ -50,10 +51,12 @@ public class PhotoViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
        // View view=mLayoutInflater.inflate(R.layout.activity_photo_details_item,null);
         PhotoView photoView = new PhotoView(container.getContext());
+
         //ImageView imageView= (ImageView) view.findViewById(R.id.pic_item);
         Picasso.with(mContext)
                 .load(Api.TNPIC_http+mPicture.list.get(position).src)
                 .config(Bitmap.Config.ARGB_8888)
+                .error(R.drawable.ic_erro)
                 .tag(mContext)
                 .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
                 .into(photoView);

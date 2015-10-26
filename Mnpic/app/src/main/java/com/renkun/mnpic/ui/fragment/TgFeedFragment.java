@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -24,7 +25,10 @@ import com.renkun.mnpic.dao.DataProvider;
 import com.renkun.mnpic.data.Api;
 import com.renkun.mnpic.data.OkHttpClientManager;
 import com.renkun.mnpic.module.Gallery;
+import com.renkun.mnpic.ui.activity.DetailsClassifyActivity;
+import com.renkun.mnpic.ui.activity.MainActivity;
 import com.renkun.mnpic.ui.activity.PhotoDetailsActivity;
+import com.renkun.mnpic.ui.activity.TgDetailsClassifyActivity;
 import com.renkun.mnpic.ui.adapter.PicListCursorAdapter;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -48,6 +52,8 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
     //页面图片集，数据库地址
     private Uri mUri;
 
+    private TgDetailsClassifyActivity mActivity;
+
     public TgFeedFragment(int classify, int NumColumns) {
         // Required empty public constructor
         PIC_CLASSIFY=classify;
@@ -64,13 +70,13 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onResume() {
         super.onResume();
-        MAX_ID_NUM=getActivity().getPreferences(Context.MODE_APPEND).getInt(MAX_ID, 0);
-    }
+        MAX_ID_NUM=getActivity().getPreferences(Context.MODE_APPEND).getInt(MAX_ID, 0);}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLoaderManager().initLoader(0, null, this);
+        mActivity= (TgDetailsClassifyActivity) getActivity();
     }
 
     @Override
@@ -96,6 +102,8 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
                 Intent intent = new Intent(getActivity(), PhotoDetailsActivity.class);
                 intent.setPackage(getActivity().getPackageName());
                 intent.putExtra("id", mCursor.getInt(mCursor.getColumnIndex("id")));
+                intent.putExtra("size", mCursor.getInt(mCursor.getColumnIndex("size")));
+                intent.putExtra("title", mCursor.getInt(mCursor.getColumnIndex("title")));
                 startActivity(intent);
 
             }
@@ -135,8 +143,13 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
         OkHttpClientManager.getInstance().getOkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-
-            }
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullRefreshGridView.onRefreshComplete();
+                        Toast.makeText(getActivity(), "网络有点问题", Toast.LENGTH_LONG).show();
+                    }
+                });            }
             @Override
             public void onResponse(final Response response) throws IOException {
                 //解析字符串
@@ -149,7 +162,7 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
                                     Gallery.getContentValues(jsonBean));
                     MAX_ID_NUM=jsonBean.tngou.get(jsonBean.tngou.size()-1).id;
                 }else {
-                    getActivity().runOnUiThread(new Runnable() {
+                    mActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             mPullRefreshGridView.onRefreshComplete();

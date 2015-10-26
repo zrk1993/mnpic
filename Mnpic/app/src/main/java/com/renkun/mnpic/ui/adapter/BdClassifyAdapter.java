@@ -26,10 +26,10 @@ public class BdClassifyAdapter extends ArrayAdapter {
     private int heightPixels;
     //分类图片
     public static final int pic[]={
-            R.mipmap.pic_1,R.mipmap.pic_2,R.mipmap.pic_3,R.mipmap.pic_4,
-            R.mipmap.pic_5,R.mipmap.pic_6,R.mipmap.pic_7,R.mipmap.pic_1,
-            R.mipmap.pic_2,R.mipmap.pic_3,R.mipmap.pic_4,R.mipmap.pic_4,
-            R.mipmap.pic_5,R.mipmap.pic_6,R.mipmap.pic_7};
+            R.drawable.bd0,R.drawable.bd1,R.drawable.bd2,R.drawable.bd3,
+            R.drawable.bd4,R.drawable.bd5,R.drawable.bd6,R.drawable.bd7,
+            R.drawable.bd8,R.drawable.bd9,R.drawable.bd10,R.drawable.bd11,
+            R.drawable.bd12,R.drawable.bd13,R.drawable.bd14};
     //分类标题
     public static final String title[]={"小清新","甜素纯","清纯","校花","唯美","气质","嫩萝莉","时尚",
                                         "长发","可爱","古典美女","素颜","非主流","短发","高雅大气很有范"};
@@ -54,7 +54,7 @@ public class BdClassifyAdapter extends ArrayAdapter {
         Holder holder;
         if (convertView==null){
 
-            convertView = mLayoutInflater.inflate(R.layout.fragment_classify_item, null);
+            convertView = mLayoutInflater.inflate(R.layout.fragment_bd_classify_item, null);
             holder=new Holder(convertView);
             convertView.setTag(holder);
         }else {
