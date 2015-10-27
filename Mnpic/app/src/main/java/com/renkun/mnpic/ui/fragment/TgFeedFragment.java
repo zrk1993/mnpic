@@ -1,5 +1,6 @@
 package com.renkun.mnpic.ui.fragment;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -43,7 +44,7 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
 
     private int NumColumns=1;
     private int PIC_CLASSIFY = 1;//图片类别
-    private int PIC_ROWS = 6;//图片条数
+    private int PIC_ROWS = 12;//图片条数
     private int PIC_PAGE = 1;//图片分页
     private String MAX_ID;//当前数据里保存的最大该类目的图片id,所对应的Preference索引
     //MAX_ID所对应的Preference索引的值
@@ -70,7 +71,8 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onResume() {
         super.onResume();
-        MAX_ID_NUM=getActivity().getPreferences(Context.MODE_APPEND).getInt(MAX_ID, 0);}
+        MAX_ID_NUM=getActivity().getSharedPreferences("mnpic", Context.MODE_PRIVATE).getInt(MAX_ID, 0);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -157,7 +159,9 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
                 Gallery jsonBean = OkHttpClientManager
                         .getJsonBean(s, Gallery.class);
                 if (jsonBean.tngou.size()>0){
-                    getActivity().getContentResolver()
+                    ContentResolver contentResolver=getActivity().getContentResolver();
+                    if (contentResolver==null)return;;
+                    contentResolver
                             .bulkInsert(mUri,
                                     Gallery.getContentValues(jsonBean));
                     MAX_ID_NUM=jsonBean.tngou.get(jsonBean.tngou.size()-1).id;
@@ -220,7 +224,7 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
     public void onPause() {
         super.onPause();
         ////MAX_ID所对应的Preference索引的值
-        getActivity().getPreferences(Context.MODE_APPEND)
+        getActivity().getSharedPreferences("mnpic", Context.MODE_PRIVATE)
                 .edit().putInt(MAX_ID,MAX_ID_NUM).commit();
     }
 }

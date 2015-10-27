@@ -2,47 +2,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true">
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/pic_1"
-            android:scaleType="centerCrop"
-            android:layout_marginBottom="75dp"/>
-
-        <LinearLayout
-            android:id="@+id/linic"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dip"
-            android:layout_alignParentBottom="true"
-            >
-            <ImageView
-                android:background="@drawable/flower"
-                android:scaleType="centerCrop"
-                android:layout_width="50dp"
-                android:layout_height="40dp"/>
-            <TextView
-                android:layout_gravity="center_vertical"
-                android:text="美女图片"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"/>
-        </LinearLayout>
-
-            <TextView
-                android:gravity="center_horizontal"
-                android:text="by 20151022"
-                android:layout_width="match_parent"
-                android:layout_height="30dip"
-                android:layout_alignParentBottom="true"/>
-
-
-    </RelativeLayout>
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_launcher"
+            />
+        <TextView
+            android:text="美女图片"
+            android:gravity="bottom"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:text=" 2015-2016"
+            android:textSize="18sp"
+            android:gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/splashview"

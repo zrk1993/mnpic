@@ -38,7 +38,7 @@ public class WelcomeActivity extends Activity {
         context = this;
         // 初始化接口，应用启动的时候调用
         // 参数：appId, appSecret, 调试模式
-        AdManager.getInstance(context).init("0a2c3972cef8990e", "e34d9f70f7c3c3a1", true);
+        AdManager.getInstance(context).init("0a2c3972cef8990e", "e34d9f70f7c3c3a1", false);
         // 第二个参数传入目标activity，或者传入null，改为setIntent传入跳转的intent
         splashView = new SplashView(context, null);
         // 设置是否显示倒数
@@ -57,7 +57,6 @@ public class WelcomeActivity extends Activity {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
         params.addRule(RelativeLayout.ABOVE, R.id.cutline);
         splashLayout.addView(splash, params);
-
         SpotManager.getInstance(context).showSplashSpotAds(context, splashView,
                 new SpotDialogListener() {
 

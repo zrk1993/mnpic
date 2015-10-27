@@ -18,4 +18,4 @@
 -dontwarn net.youmi.android.**
 -keep class net.youmi.android.** {
     *;
-}-
+}

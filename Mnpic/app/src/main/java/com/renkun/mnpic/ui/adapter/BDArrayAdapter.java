@@ -23,6 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by rk on 2015/10/24.
  */
+@SuppressWarnings("ALL")
 public class BDArrayAdapter extends ArrayAdapter {
     private Resources mResources;
     private LayoutInflater mLayoutInflater;
@@ -59,6 +60,7 @@ public class BDArrayAdapter extends ArrayAdapter {
         }else {
             holder= (Holder) convertView.getTag();
         }
+        //noinspection deprecation
         holder.mImageView.setBackgroundColor(
                 mResources.getColor(ColorUtil.getColor()));
         Picasso.with(mContext)

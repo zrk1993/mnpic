@@ -111,7 +111,7 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
             intent.setPackage(getActivity().getPackageName());
             intent.putExtra("id", mCursor.getInt(mCursor.getColumnIndex("id")));
             intent.putExtra("size", mCursor.getInt(mCursor.getColumnIndex("size")));
-            intent.putExtra("title", mCursor.getInt(mCursor.getColumnIndex("title")));
+            intent.putExtra("title", mCursor.getString(mCursor.getColumnIndex("title")));
             getActivity().startActivity(intent);
         }
     }

@@ -28,7 +28,7 @@ public class HotListAdapter extends CursorAdapter {
     private Context mContext;
     private ListView mListView;
     private LayoutInflater mLayoutInflater;
-    private SimpleDateFormat format=new SimpleDateFormat("MM-dd HH:mm");
+    private SimpleDateFormat format=new SimpleDateFormat("MM-dd");
     //屏幕宽高
     private int widthPixels;
     private int heightPixels;
@@ -62,10 +62,11 @@ public class HotListAdapter extends CursorAdapter {
                 .resize(widthPixels,widthPixels)
                 .centerInside()
                 .into(holder.mImageView);
-        holder.mTextView.setTypeface(typeFace);
-        holder.mTextView
-                .setText(
-                        format.format(cursor.getLong(cursor.getColumnIndex("time"))));
+        String[] strings=format.format(cursor.getLong(cursor.getColumnIndex("time"))).split("-");
+        holder.mTextViewDay
+                .setText(strings[1]);
+        holder.mTextViewMonth
+                .setText(strings[0]+"月");
 
 
 
@@ -81,11 +82,13 @@ public class HotListAdapter extends CursorAdapter {
     static class Holder{
 
         ImageView mImageView;
-        TextView mTextView;
+        TextView mTextViewMonth;
+        TextView mTextViewDay;
 
         public Holder(View view){
             mImageView= (ImageView) view.findViewById(R.id.item_pic);
-            mTextView= (TextView) view.findViewById(R.id.item_time);
+            mTextViewDay= (TextView) view.findViewById(R.id.item_time_day);
+            mTextViewMonth= (TextView) view.findViewById(R.id.item_time_month);
         }
     }
 }

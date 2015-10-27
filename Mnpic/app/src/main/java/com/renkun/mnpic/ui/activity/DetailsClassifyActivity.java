@@ -1,11 +1,15 @@
 package com.renkun.mnpic.ui.activity;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -13,11 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.renkun.mnpic.App;
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.data.Api;
 import com.renkun.mnpic.ui.fragment.BdFragment;
 import com.renkun.mnpic.ui.fragment.BdFragmentClik;
 import com.renkun.mnpic.util.WallpaperUtli;
+
+import net.youmi.android.spot.SpotDialogListener;
+import net.youmi.android.spot.SpotManager;
 
 public class DetailsClassifyActivity extends AppCompatActivity {
     private  String CLASSIFY;
@@ -34,6 +42,18 @@ public class DetailsClassifyActivity extends AppCompatActivity {
     public ImageButton mButWrallper;
     private ImageView mBack;
     public Fragment mContent;//当前显示的fragment
+
+    //广告
+    public  final int ADdelay=15000;
+    public  int numberAD=1;
+    public  boolean isShowYM;//插屏广告是否展示了
+    @Override
+    public void onBackPressed() {
+        if (!SpotManager.getInstance(this).disMiss()) {
+            // 弹出退出窗口，可以使用自定义退屏弹出和回退动画,参照demo,若不使用动画，传入-1
+            super.onBackPressed();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +87,7 @@ public class DetailsClassifyActivity extends AppCompatActivity {
             mContent=new BdFragment(pn,rn,tag1,tag2,flags);
             transaction.add(R.id.fragment_details,mContent);
             transaction.commit();
+            initYOUMI(this);
         }
 
     }
@@ -83,5 +104,43 @@ public class DetailsClassifyActivity extends AppCompatActivity {
                 transaction.hide(from).show(to).commit(); // 隐藏当前的fragment，显示下一个
             }
         }
+    }
+
+    private void initYOUMI(final Context context){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showYM(DetailsClassifyActivity.this);
+            }
+        }, 8000);
+
+    }
+    private void showYM(Context context){
+        if (!isShowYM)
+            SpotManager.getInstance(context).showSpotAds(context, new SpotDialogListener() {
+                @Override
+                public void onShowSuccess() {
+                    isShowYM=true;
+                    Log.i("YoumiSdk", "onShowSuccess");
+
+                }
+
+                @Override
+                public void onShowFailed() {
+                    isShowYM=false;
+                    Log.i("YoumiSdk", "onShowFailed");
+                }
+
+                @Override
+                public void onSpotClosed() {
+                    isShowYM=false;
+                    Log.e("YoumiSdk", "closed");
+                }
+
+                @Override
+                public void onSpotClick() {
+                    Log.i("YoumiSdk", "插屏点击");
+                }
+            });
     }
 }

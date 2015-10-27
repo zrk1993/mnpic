@@ -25,8 +25,8 @@ public class TgClassifyAdapter extends ArrayAdapter {
     private int widthPixels;
     private int heightPixels;
     //分类图片
-    private static final int pic[]={R.mipmap.pic_1,R.mipmap.pic_2,R.mipmap.pic_3,R.mipmap.pic_4,
-            R.mipmap.pic_5,R.mipmap.pic_6,R.mipmap.pic_7};
+    private static final int pic[]={R.drawable.pic_1,R.drawable.pic_2,R.drawable.pic_3,R.drawable.pic_4,
+            R.drawable.pic_5,R.drawable.pic_6,R.drawable.pic_7};
     //分类标题
     private static final String title[]={"性感美女","韩日美女","丝袜美腿","美女照片",
                                             "美女写真","清纯美女","性感车模"};
