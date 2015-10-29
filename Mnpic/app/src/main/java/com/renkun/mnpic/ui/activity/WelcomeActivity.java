@@ -4,10 +4,6 @@ package com.renkun.mnpic.ui.activity;
  * Created by rk on 2015/10/22.
  */
 
-import net.youmi.android.AdManager;
-import net.youmi.android.spot.SplashView;
-import net.youmi.android.spot.SpotDialogListener;
-import net.youmi.android.spot.SpotManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +18,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
 import com.renkun.mnpic.R;
+
+import net.youmi.android.AdManager;
+import net.youmi.android.spot.SplashView;
+import net.youmi.android.spot.SpotDialogListener;
+import net.youmi.android.spot.SpotManager;
 
 public class WelcomeActivity extends Activity {
 
@@ -38,7 +39,7 @@ public class WelcomeActivity extends Activity {
         context = this;
         // 初始化接口，应用启动的时候调用
         // 参数：appId, appSecret, 调试模式
-        AdManager.getInstance(context).init("0a2c3972cef8990e", "e34d9f70f7c3c3a1", false);
+        AdManager.getInstance(context).init("0f5cb9ace2221f64", "e4dadeb924f926fa", false);
         // 第二个参数传入目标activity，或者传入null，改为setIntent传入跳转的intent
         splashView = new SplashView(context, null);
         // 设置是否显示倒数

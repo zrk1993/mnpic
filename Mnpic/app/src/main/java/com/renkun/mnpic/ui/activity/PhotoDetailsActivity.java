@@ -49,9 +49,7 @@ public class PhotoDetailsActivity extends AppCompatActivity {
     private PhotoViewPagerAdapter mPhotoViewPagerAdapter;
 
     //广告
-    public  final int ADdelay=15000;
-    public  int numberAD=1;
-    public  boolean isShowYM;//插屏广告是否展示了
+    public boolean isShowYM;//插屏广告是否展示了
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,32 +58,28 @@ public class PhotoDetailsActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_photo_details);
-        mContext=this;
+        mContext = this;
         mViewPager = (ViewPager) findViewById(R.id.photo_pager);
         mTextTitle = (TextView) findViewById(R.id.title);
         mTextNnm = (TextView) findViewById(R.id.size);
-        mback= (ImageView) findViewById(R.id.fabBtn);
+        mback = (ImageView) findViewById(R.id.fabBtn);
         mback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        mButCollect= (ImageButton) findViewById(R.id.but_collect);
-        mButWrallper= (ImageButton) findViewById(R.id.set_wrallper);
+        mButCollect = (ImageButton) findViewById(R.id.but_collect);
+        mButWrallper = (ImageButton) findViewById(R.id.set_wrallper);
 
         id = getIntent().getIntExtra("id", 1);
-        size=getIntent().getIntExtra("size", 5);
-        title=getIntent().getStringExtra("title");
+        size = getIntent().getIntExtra("size", 5);
+        title = getIntent().getStringExtra("title");
 
         mTextTitle.setText(title);
         mTextNnm.setText("1/" + size);
         loadPhoto();
-
-
-
     }
-
 
     private void loadPhoto() {
         Request request = new Request.Builder()
@@ -170,7 +164,6 @@ public class PhotoDetailsActivity extends AppCompatActivity {
                             })
                             .show();
                 }
-
             }
         });
     }
@@ -181,48 +174,46 @@ public class PhotoDetailsActivity extends AppCompatActivity {
         initYOUMI(this);
     }
 
-    private void initYOUMI(final Context context){
+    private void initYOUMI(final Context context) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 showYM(PhotoDetailsActivity.this);
             }
-        }, 4000);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showYM(PhotoDetailsActivity.this);
-            }
-        }, 25000);
+        }, 5000);
+
     }
-    private void showYM(Context context){
-        if (!isShowYM)SpotManager.getInstance(context).showSpotAds(context, new SpotDialogListener() {
-            @Override
-            public void onShowSuccess() {
-                isShowYM=true;
-                Log.i("YoumiSdk", "onShowSuccess");
 
-            }
+    private void showYM(Context context) {
+        if (!isShowYM)
+            SpotManager.getInstance(context).showSpotAds(context, new SpotDialogListener() {
+                @Override
+                public void onShowSuccess() {
+                    isShowYM = true;
+                    Log.i("YoumiSdk", "onShowSuccess");
 
-            @Override
-            public void onShowFailed() {
-                isShowYM=false;
-                Log.i("YoumiSdk", "onShowFailed");
-            }
+                }
 
-            @Override
-            public void onSpotClosed() {
-                isShowYM=false;
-                Log.e("YoumiSdk", "closed");
-            }
+                @Override
+                public void onShowFailed() {
+                    isShowYM = false;
+                    Log.i("YoumiSdk", "onShowFailed");
+                }
 
-            @Override
-            public void onSpotClick() {
-                Log.i("YoumiSdk", "插屏点击");
-            }
-        });
+                @Override
+                public void onSpotClosed() {
+                    isShowYM = false;
+                    Log.e("YoumiSdk", "closed");
+                }
+
+                @Override
+                public void onSpotClick() {
+                    Log.i("YoumiSdk", "插屏点击");
+                }
+            });
     }
-        @Override
+
+    @Override
     public void onBackPressed() {
         if (!SpotManager.getInstance(this).disMiss()) {
             // 弹出退出窗口，可以使用自定义退屏弹出和回退动画,参照demo,若不使用动画，传入-1

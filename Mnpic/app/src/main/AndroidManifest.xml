@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.renkun.mnpic" >
     <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,7 +16,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="美女图片"
+        android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.activity.WelcomeActivity"
@@ -80,7 +81,7 @@
         <!-- 有米渠道号(可选配置) 渠道号不能带空格，类型为整数 -->
         <meta-data
             android:name="YOUMI_CHANNEL"
-            android:value="0" >
+            android:value="10010" >
         </meta-data>
 
     </application>

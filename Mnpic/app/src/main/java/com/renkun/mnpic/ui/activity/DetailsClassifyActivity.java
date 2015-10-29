@@ -1,15 +1,14 @@
 package com.renkun.mnpic.ui.activity;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -17,12 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.renkun.mnpic.App;
 import com.renkun.mnpic.R;
-import com.renkun.mnpic.data.Api;
 import com.renkun.mnpic.ui.fragment.BdFragment;
-import com.renkun.mnpic.ui.fragment.BdFragmentClik;
-import com.renkun.mnpic.util.WallpaperUtli;
 
 import net.youmi.android.spot.SpotDialogListener;
 import net.youmi.android.spot.SpotManager;
@@ -44,8 +39,6 @@ public class DetailsClassifyActivity extends AppCompatActivity {
     public Fragment mContent;//当前显示的fragment
 
     //广告
-    public  final int ADdelay=15000;
-    public  int numberAD=1;
     public  boolean isShowYM;//插屏广告是否展示了
     @Override
     public void onBackPressed() {
@@ -94,7 +87,7 @@ public class DetailsClassifyActivity extends AppCompatActivity {
     public void switchContent(Fragment from, Fragment to) {
         if (mContent != to) {
             mContent = to;
-            FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(
+            @SuppressLint("CommitTransaction") FragmentTransaction transaction = fm.beginTransaction().setCustomAnimations(
                     android.R.anim.fade_in, R.anim.default_anim_out);
             if (!to.isAdded()) {    // 先判断是否被add过
                 transaction.hide(from).add(R.id.fragment_details, to)
@@ -112,7 +105,7 @@ public class DetailsClassifyActivity extends AppCompatActivity {
             public void run() {
                 showYM(DetailsClassifyActivity.this);
             }
-        }, 8000);
+        }, 5000);
 
     }
     private void showYM(Context context){
@@ -122,9 +115,7 @@ public class DetailsClassifyActivity extends AppCompatActivity {
                 public void onShowSuccess() {
                     isShowYM=true;
                     Log.i("YoumiSdk", "onShowSuccess");
-
                 }
-
                 @Override
                 public void onShowFailed() {
                     isShowYM=false;

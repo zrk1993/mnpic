@@ -49,7 +49,7 @@ public class PhotoViewPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-       // View view=mLayoutInflater.inflate(R.layout.activity_photo_details_item,null);
+       //View view=mLayoutInflater.inflate(R.layout.activity_photo_details_item,null);
         PhotoView photoView = new PhotoView(container.getContext());
 
         //ImageView imageView= (ImageView) view.findViewById(R.id.pic_item);
@@ -60,7 +60,6 @@ public class PhotoViewPagerAdapter extends PagerAdapter {
                 .tag(mContext)
                 .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
                 .into(photoView);
-
         container.addView(photoView);
         return photoView;
     }

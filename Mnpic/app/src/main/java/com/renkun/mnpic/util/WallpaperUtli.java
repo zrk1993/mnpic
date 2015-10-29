@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.renkun.mnpic.data.OkHttpClientManager;
@@ -16,7 +17,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,7 +55,11 @@ public class WallpaperUtli {
     public static void setWallpaper(Context context,Bitmap bitmap){
         WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
         try {
-            wallpaperManager.setBitmap(bitmap);
+            WallpaperManager instance = WallpaperManager.getInstance(context);
+                               int[] i= Screenutil.getScreenHeightANDheight(context);
+                                instance.suggestDesiredDimensions(i[0], i[1]);
+                               instance.setBitmap(bitmap);
+                                Toast.makeText(context,"壁纸设置成功",Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }

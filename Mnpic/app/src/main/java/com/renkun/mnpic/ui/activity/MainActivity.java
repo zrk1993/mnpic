@@ -8,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,14 +16,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.renkun.mnpic.App;
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.ui.adapter.FragmentAdapter;
 import com.renkun.mnpic.ui.fragment.BdClassifyFragment;
 import com.renkun.mnpic.ui.fragment.HotFragment;
 import com.renkun.mnpic.ui.fragment.TgClassifyFragment;
 
-import net.youmi.android.spot.SpotDialogListener;
 import net.youmi.android.spot.SpotManager;
 
 import java.util.ArrayList;
@@ -37,11 +34,6 @@ public class MainActivity extends AppCompatActivity {
     //v4中的ViewPager控件
     private ViewPager mViewPager;
     private ImageView fabBtn;
-    //广告
-    public  final int ADdelay=15000;
-    public  int numberAD=1;
-    public  boolean isShowYM;//插屏广告是否展示了
-
 
     @Override
     protected void onResume() {
@@ -68,46 +60,10 @@ public class MainActivity extends AppCompatActivity {
                 SpotManager.ORIENTATION_PORTRAIT);
         SpotManager.getInstance(context).setAnimationType(SpotManager.ANIM_ADVANCE);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showYM(MainActivity.this);
-            }
-        }, 15000);
+
     }
-    private void showYM(Context context){
-        if (!isShowYM)SpotManager.getInstance(context).showSpotAds(context, new SpotDialogListener() {
-            @Override
-            public void onShowSuccess() {
-                isShowYM=true;
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        showYM(MainActivity.this);
-                    }
-                }, 60000);
-                Log.i("YoumiSdk", "onShowSuccess");
 
-            }
 
-            @Override
-            public void onShowFailed() {
-                isShowYM=false;
-                Log.i("YoumiSdk", "onShowFailed");
-            }
-
-            @Override
-            public void onSpotClosed() {
-                isShowYM=false;
-                Log.e("YoumiSdk", "closed");
-            }
-
-            @Override
-            public void onSpotClick() {
-                Log.i("YoumiSdk", "插屏点击");
-            }
-        });
-    }
     private void initView(){
         fabBtn= (ImageView) this.findViewById(R.id.fabBtn);
         fabBtn.setOnClickListener(new fabBtnClicklistener());
@@ -221,21 +177,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (!isShowYM&&keyCode==KeyEvent.KEYCODE_BACK){
+        if (keyCode==KeyEvent.KEYCODE_BACK){
             exit();
             return false;
         }
         return super.onKeyDown(keyCode, event);
     }
-
-    @Override
-    public void onBackPressed() {
-        if (!SpotManager.getInstance(this).disMiss()) {
-            // 弹出退出窗口，可以使用自定义退屏弹出和回退动画,参照demo,若不使用动画，传入-1
-            super.onBackPressed();
-        }
-    }
-
     private boolean mIsExit;
     private void exit(){
         if (mIsExit){
@@ -250,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                     //execute the task
                     mIsExit=false;
                 }
-            }, 1000);
+            }, 2000);
 
         }
     }

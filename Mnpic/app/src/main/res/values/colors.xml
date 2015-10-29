@@ -2,11 +2,10 @@
 <resources>
     <color name="colorPrimary">#ff4444</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorTabLayout">#03BCD4</color>
-    <color name="colorWhite">#f5f5f5</color>
+    <color name="colorAccent">#fd6767</color>
+    <color name="colorWhite">#f9f9f9</color>
     <color name="colorGray">#44777777</color>
-    <color name="colorLine">#ccc</color>
+    <color name="colorLine">#ddd</color>
 	
 	<color name="color">#fd6767</color>
 

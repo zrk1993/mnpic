@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Created by rk on 2015/10/11.
  */
+@SuppressWarnings("ALL")
 public class App extends Application {
     private static Context sContext;
     private List<Activity> activitys = null;

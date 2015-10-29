@@ -103,9 +103,8 @@ public class SettingsFragment extends PreferenceFragment {
         SharedPreferences.Editor editor=getActivity().getSharedPreferences("mnpic", Context.MODE_PRIVATE).edit();
         for (int j=1;j<8;j++){
             editor.putInt("MAX_ID_" + j, 0);
-
         }
-        editor.commit();
+        editor.apply();
 
     }
     private void showAlertDialog(String title,String message){

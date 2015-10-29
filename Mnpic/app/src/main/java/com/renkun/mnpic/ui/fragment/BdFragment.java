@@ -93,7 +93,7 @@ public class BdFragment extends Fragment {
     }
 
     private void loadnext() {
-        pn += 5;
+        pn += 10;
         String url = String.format(Api.BDApiClassify, pn, rn, tag1, tag2);
         freshFlag = true;
         loadData(url);
