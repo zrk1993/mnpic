@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.data.Api;
@@ -49,19 +50,17 @@ public class PhotoViewPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-       //View view=mLayoutInflater.inflate(R.layout.activity_photo_details_item,null);
-        PhotoView photoView = new PhotoView(container.getContext());
-
-        //ImageView imageView= (ImageView) view.findViewById(R.id.pic_item);
+        View view=mLayoutInflater.inflate(R.layout.activity_photo_details_item,null);
+        ImageView imageView= (ImageView) view.findViewById(R.id.iv_photo);
         Picasso.with(mContext)
                 .load(Api.TNPIC_http+mPicture.list.get(position).src)
                 .config(Bitmap.Config.ARGB_8888)
-                .error(R.drawable.ic_erro)
+                .error(R.drawable.erro)
                 .tag(mContext)
                 .memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE)
-                .into(photoView);
-        container.addView(photoView);
-        return photoView;
+                .into(imageView);
+        container.addView(view);
+        return view;
     }
 
     @Override

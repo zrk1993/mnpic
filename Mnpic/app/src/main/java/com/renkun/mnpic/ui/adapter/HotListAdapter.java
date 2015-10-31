@@ -34,9 +34,6 @@ public class HotListAdapter extends CursorAdapter {
     private int heightPixels;
     private Resources mResources;
 
-    private Typeface typeFace;
-
-
     public HotListAdapter(Context context, ListView listView) {
         super(context, null, false);
         mResources=context.getResources();
@@ -45,7 +42,6 @@ public class HotListAdapter extends CursorAdapter {
         //图片宽高比3：4
         widthPixels= Screenutil.getScreenHeightANDheight(context)[0];
         heightPixels= (int) (widthPixels*1.4);
-        typeFace = Typeface.createFromAsset(context.getAssets(), "fonts/cosmicaldisfase.ttf");
     }
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class PhotoDetailsActivity extends AppCompatActivity {
     private ImageButton mButWrallper;
     private ImageView mback;
     private PhotoViewPagerAdapter mPhotoViewPagerAdapter;
+    private ProgressBar mload_progress;
 
     //广告
     public boolean isShowYM;//插屏广告是否展示了
@@ -59,6 +61,7 @@ public class PhotoDetailsActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_photo_details);
         mContext = this;
+        mload_progress= (ProgressBar) findViewById(R.id.load_progress);
         mViewPager = (ViewPager) findViewById(R.id.photo_pager);
         mTextTitle = (TextView) findViewById(R.id.title);
         mTextNnm = (TextView) findViewById(R.id.size);
@@ -95,6 +98,7 @@ public class PhotoDetailsActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        mload_progress.setVisibility(View.GONE);
                         Toast.makeText(PhotoDetailsActivity.this, "网络连接失败,请刷新重试。", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -111,6 +115,7 @@ public class PhotoDetailsActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            mload_progress.setVisibility(View.GONE);
                             mTextTitle.setText(mPicture.title);
                             mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                                 @Override
@@ -180,7 +185,7 @@ public class PhotoDetailsActivity extends AppCompatActivity {
             public void run() {
                 showYM(PhotoDetailsActivity.this);
             }
-        }, 5000);
+        }, 5000+size*200);
 
     }
 
@@ -191,21 +196,17 @@ public class PhotoDetailsActivity extends AppCompatActivity {
                 public void onShowSuccess() {
                     isShowYM = true;
                     Log.i("YoumiSdk", "onShowSuccess");
-
                 }
-
                 @Override
                 public void onShowFailed() {
                     isShowYM = false;
                     Log.i("YoumiSdk", "onShowFailed");
                 }
-
                 @Override
                 public void onSpotClosed() {
                     isShowYM = false;
                     Log.e("YoumiSdk", "closed");
                 }
-
                 @Override
                 public void onSpotClick() {
                     Log.i("YoumiSdk", "插屏点击");

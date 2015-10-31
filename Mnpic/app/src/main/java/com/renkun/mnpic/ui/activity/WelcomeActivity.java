@@ -39,7 +39,7 @@ public class WelcomeActivity extends Activity {
         context = this;
         // 初始化接口，应用启动的时候调用
         // 参数：appId, appSecret, 调试模式
-        AdManager.getInstance(context).init("0f5cb9ace2221f64", "e4dadeb924f926fa", false);
+        AdManager.getInstance(context).init("0b9e530b0f155405", "73de32b474aa123c", false);
         // 第二个参数传入目标activity，或者传入null，改为setIntent传入跳转的intent
         splashView = new SplashView(context, null);
         // 设置是否显示倒数
@@ -53,8 +53,8 @@ public class WelcomeActivity extends Activity {
 
         splash = splashView.getSplashView();
         setContentView(R.layout.activity_welcom);
-        splashLayout = ((RelativeLayout) findViewById(R.id.splashview));
-        splashLayout.setVisibility(View.GONE);
+        splashLayout = (RelativeLayout) findViewById(R.id.splashview);
+        //splashLayout.setVisibility(View.GONE);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
         params.addRule(RelativeLayout.ABOVE, R.id.cutline);
         splashLayout.addView(splash, params);
@@ -63,7 +63,7 @@ public class WelcomeActivity extends Activity {
 
                     @Override
                     public void onShowSuccess() {
-                        splashLayout.setVisibility(View.VISIBLE);
+                        //splashLayout.setVisibility(View.VISIBLE);
                         splashLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.pic_enter_anim_alpha));
                         Log.d("youmisdk", "展示成功");
                     }

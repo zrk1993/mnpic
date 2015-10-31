@@ -63,7 +63,7 @@ public class WallpaperUtli {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show();
+        
     }
 
     /** 保存方法 */

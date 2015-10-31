@@ -105,7 +105,7 @@ public class DetailsClassifyActivity extends AppCompatActivity {
             public void run() {
                 showYM(DetailsClassifyActivity.this);
             }
-        }, 5000);
+        }, 6000);
 
     }
     private void showYM(Context context){

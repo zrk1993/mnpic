@@ -8,14 +8,43 @@ android {
         minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
-        versionName "2.3.1"
+        versionName "2.3.0"
     }
     buildTypes {
         release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            debuggable false
+            //混淆
+            minifyEnabled false
+            //Zipalign优化
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            zipAlignEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
     }
+
+    signingConfigs {
+        debugConfig {
+            storeFile file("android.keystore");
+            storePassword "zhengrenkun"
+            keyAlias "mnpic"
+            keyPassword "zxcvbnm8"
+        }
+
+        releaseConfig {
+            storeFile file("android.keystore");
+            storePassword "zhengrenkun"
+            keyAlias "mnpic"
+            keyPassword "zxcvbnm8"
+        }
+    }
+
     productFlavors {
     }
 }

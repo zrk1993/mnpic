@@ -137,8 +137,19 @@ public class HotFragment extends Fragment implements LoaderManager.LoaderCallbac
         Log.d("http", request.urlString());
         OkHttpClientManager.getInstance().getOkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Request request, IOException e) {
-                Snackbar.make(getView(),"网络有点问题",Snackbar.LENGTH_SHORT).show();
+            public void onFailure(Request request, IOException e) {              
+				getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPullRefreshListView.onRefreshComplete();
+                            Snackbar.make(getView(), "网络有点问题。。", Snackbar.LENGTH_SHORT)
+                                    .setAction("好吧", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                        }
+                                    }).show();
+                        }
+                    });
             }
 
             @Override
