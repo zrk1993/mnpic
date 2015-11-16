@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,13 +17,14 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.baidu.mobstat.StatService;
+import com.renkun.mnpic.App;
 import com.renkun.mnpic.R;
+import com.renkun.mnpic.data.Config;
 import com.renkun.mnpic.ui.adapter.FragmentAdapter;
 import com.renkun.mnpic.ui.fragment.BdClassifyFragment;
 import com.renkun.mnpic.ui.fragment.HotFragment;
 import com.renkun.mnpic.ui.fragment.TgClassifyFragment;
-
-import net.youmi.android.spot.SpotManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +36,6 @@ public class MainActivity extends AppCompatActivity {
     //v4中的ViewPager控件
     private ViewPager mViewPager;
     private ImageView fabBtn;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,26 +44,15 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         //初始化控件和布局
+        Config.isSb= getSharedPreferences("mnpic", MODE_PRIVATE).getBoolean("isSB",false);
         initView();
-        //初始化有米广告
-        initYOUMI(this);
-    }
-    private void initYOUMI(final Context context){
-        //预加载广告
-        SpotManager.getInstance(context).loadSpotAds();
-        //设置插屏横竖屏展示与展示动画设置
-        SpotManager.getInstance(context).setSpotOrientation(
-                SpotManager.ORIENTATION_PORTRAIT);
-        SpotManager.getInstance(context).setAnimationType(SpotManager.ANIM_ADVANCE);
-
 
     }
-
-
     private void initView(){
         fabBtn= (ImageView) this.findViewById(R.id.fabBtn);
         fabBtn.setOnClickListener(new fabBtnClicklistener());
         //MainActivity的布局文件中的主要控件初始化
+        Log.d("aaa",System.currentTimeMillis()+"");
         mTabLayout = (TabLayout) this.findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) this.findViewById(R.id.view_pager);
         //初始化TabLayout的title数据集
@@ -75,24 +60,25 @@ public class MainActivity extends AppCompatActivity {
         titles.add("每日推荐");
         titles.add("美女图集");
         titles.add("精品分类");
-
-
-        //初始化TabLayout的title
-        mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(2)));
-        //初始化ViewPager的数据集
-
         List<Fragment> fragments = new ArrayList<>();
-        HotFragment hotFragment=new HotFragment();
-        BdClassifyFragment classifyFragment=new BdClassifyFragment();
-        TgClassifyFragment tgClassifyFragment=new TgClassifyFragment();
-        fragments.add(hotFragment);
-        fragments.add(tgClassifyFragment);
-        fragments.add(classifyFragment);
-
-
+        if (Config.isSb){
+            //初始化TabLayout的title
+            mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+            mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
+            mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
+            mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(2)));
+            //初始化ViewPager的数据集
+            HotFragment hotFragment=new HotFragment();
+            BdClassifyFragment classifyFragment=new BdClassifyFragment();
+            TgClassifyFragment tgClassifyFragment=new TgClassifyFragment();
+            fragments.add(hotFragment);
+            fragments.add(tgClassifyFragment);
+            fragments.add(classifyFragment);
+        }else {
+            mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(2)));
+            BdClassifyFragment classifyFragment=new BdClassifyFragment();
+            fragments.add(classifyFragment);
+        }
 
         //创建ViewPager的adapter
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager(), fragments, titles);
@@ -129,18 +115,19 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent=new Intent(MainActivity.this,SETActivity.class);
+            intent.setPackage(getPackageName());
+            startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
     /**
      * viewpager .切换动画
      */
     public class DepthPageTransformer implements ViewPager.PageTransformer {
         private static final float MIN_SCALE = 0.75f;
-
         public void transformPage(View view, float position) {
             int pageWidth = view.getWidth();
 
@@ -154,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
                 view.setTranslationX(0);
                 view.setScaleX(1);
                 view.setScaleY(1);
-
             } else if (position <= 1) { // (0,1]
                 // Fade the page out.
                 view.setAlpha(1 - position);
@@ -195,17 +181,35 @@ public class MainActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     //execute the task
-                    mIsExit=false;
+                    mIsExit = false;
                 }
             }, 2000);
-
         }
     }
 
     @Override
-
     protected void onDestroy() {
-        SpotManager.getInstance(this).onDestroy();
         super.onDestroy();
+    }
+
+    public void onResume() {
+        super.onResume();
+
+        /**
+         * 页面起始（每个Activity中都需要添加，如果有继承的父Activity中已经添加了该调用，那么子Activity中务必不能添加）
+         * 不能与StatService.onPageStart一级onPageEnd函数交叉使用
+         */
+        StatService.onResume(this);
+            }
+
+    public void onPause() {
+        super.onPause();
+
+        /**
+         * 页面结束（每个Activity中都需要添加，如果有继承的父Activity中已经添加了该调用，那么子Activity中务必不能添加）
+         * 不能与StatService.onPageStart一级onPageEnd函数交叉使用
+         */
+        StatService.onPause(this);
+
     }
 }

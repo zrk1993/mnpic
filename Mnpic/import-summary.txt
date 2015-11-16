@@ -7,17 +7,25 @@ The following files were *not* copied into the new Gradle project; you
 should evaluate whether these are still needed in your project and if
 so manually move them:
 
-* LICENSE
-* pom.xml
+* proguard-project.txt
 
 Moved Files:
 ------------
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => pullToRefrash\src\main\AndroidManifest.xml
-* res\ => pullToRefrash\src\main\res\
-* src\ => pullToRefrash\src\main\java\
+* AndroidManifest.xml => bDIntegrationSDK_LibProject\src\main\AndroidManifest.xml
+* assets\ => bDIntegrationSDK_LibProject\src\main\assets
+* libs\android_api_3.6.9.3.jar => bDIntegrationSDK_LibProject\libs\android_api_3.6.9.3.jar
+* libs\armeabi\libbase64encoder_v1_4.so => bDIntegrationSDK_LibProject\src\main\jniLibs\armeabi\libbase64encoder_v1_4.so
+* libs\armeabi\libMD5_v1.so => bDIntegrationSDK_LibProject\src\main\jniLibs\armeabi\libMD5_v1.so
+* libs\BDAutoUpdate_APPX_SDK_20150826.jar => bDIntegrationSDK_LibProject\libs\BDAutoUpdate_APPX_SDK_20150826.jar
+* libs\need_lib.jar => bDIntegrationSDK_LibProject\libs\need_lib.jar
+* libs\patchupdate.jar => bDIntegrationSDK_LibProject\libs\patchupdate.jar
+* libs\x86\libbase64encoder_v1_4.so => bDIntegrationSDK_LibProject\src\main\jniLibs\x86\libbase64encoder_v1_4.so
+* libs\x86\libMD5_v1.so => bDIntegrationSDK_LibProject\src\main\jniLibs\x86\libMD5_v1.so
+* res\ => bDIntegrationSDK_LibProject\src\main\res\
+* src\ => bDIntegrationSDK_LibProject\src\main\java
 
 Next Steps:
 -----------

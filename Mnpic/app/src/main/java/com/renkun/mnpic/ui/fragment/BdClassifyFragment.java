@@ -13,12 +13,10 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.renkun.mnpic.R;
+import com.renkun.mnpic.data.Config;
 import com.renkun.mnpic.ui.activity.DetailsClassifyActivity;
 import com.renkun.mnpic.ui.adapter.BdClassifyAdapter;
 
-import net.youmi.android.banner.AdSize;
-import net.youmi.android.banner.AdView;
-import net.youmi.android.banner.AdViewListener;
 
 /**
  *
@@ -29,7 +27,6 @@ public class BdClassifyFragment extends Fragment  {
 
     private GridView mGridView;
     private BdClassifyAdapter mClassifyAdapter;
-
     public BdClassifyFragment() {
         // Required empty public constructor
     }
@@ -47,16 +44,20 @@ public class BdClassifyFragment extends Fragment  {
         mGridView.setOnItemClickListener(new GrideItemClickedListener());
 
         loadData();
+        if (Config.isSb){title=title1;}
         return view;
     }
-
+    public  String title1[]={"小清新","甜素纯","清纯","校花","唯美","气质","嫩萝莉","时尚",
+            "长发","可爱","古典美女","素颜","非主流","短发","高雅大气很有范"};
+    public  String title[]={"小清新","甜素纯","清纯","校花","气质","嫩萝莉",
+            "长发","可爱","古典美女","素颜","非主流","短发"};
     private class GrideItemClickedListener implements AdapterView.OnItemClickListener{
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent=new Intent(getActivity(), DetailsClassifyActivity.class);
             intent.setPackage(getActivity().getPackageName());
-            intent.putExtra("classify", BdClassifyAdapter.title[position]);
+            intent.putExtra("classify", title[position]);
             getActivity().startActivity(intent);
         }
     }

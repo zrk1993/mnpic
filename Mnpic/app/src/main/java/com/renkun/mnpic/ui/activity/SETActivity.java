@@ -12,7 +12,8 @@ import com.renkun.mnpic.R;
 import com.renkun.mnpic.ui.fragment.SettingsFragment;
 
 
-public class SETActivity extends AppCompatActivity  implements SharedPreferences.OnSharedPreferenceChangeListener{
+
+public class SETActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
     private SettingsFragment mSettingsFragment;
     private Button mButtonBack;
 
@@ -48,6 +49,7 @@ public class SETActivity extends AppCompatActivity  implements SharedPreferences
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
     }
+
 
 
 

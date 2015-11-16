@@ -1,7 +1,5 @@
 package com.renkun.mnpic.ui.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -36,6 +34,8 @@ public class BdFragmentClik extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity= (DetailsClassifyActivity) getActivity();
+
+
     }
 
     @Override
@@ -62,19 +62,19 @@ public class BdFragmentClik extends Fragment{
 
     private void setItemClick(){
                 mActivity.mButWrallper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(mViewPager, "设置为壁纸吗？", Snackbar.LENGTH_LONG)
-                        .setAction("是的", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                WallpaperUtli.setBitmap(getActivity(), getUrl(mDATAArrayList.get(mViewPager.getCurrentItem())));
-                                Snackbar.make(mViewPager,"正在设置。。",Snackbar.LENGTH_LONG).show();
+                    @Override
+                    public void onClick(View v) {
+                        Snackbar.make(mViewPager, "设置为壁纸吗？", Snackbar.LENGTH_LONG)
+                                .setAction("是的", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        WallpaperUtli.setBitmap(getActivity(), getUrl(mDATAArrayList.get(mViewPager.getCurrentItem())));
+                                        Snackbar.make(mViewPager, "正在设置。。", Snackbar.LENGTH_LONG).show();
 
-                            }
-                        }).show();
-            }
-        });
+                                    }
+                                }).show();
+                    }
+                });
 
         mActivity.mButCollect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,8 +84,8 @@ public class BdFragmentClik extends Fragment{
                             @Override
                             public void onClick(View v) {
                                 WallpaperUtli.savePic(getActivity(),
-                                        getUrl(mDATAArrayList.get(mViewPager.getCurrentItem())), mDATAArrayList.get(mViewPager.getCurrentItem()).id+ ".png");
-                                Snackbar.make(mViewPager,"正在保存。。",Snackbar.LENGTH_LONG).show();
+                                        getUrl(mDATAArrayList.get(mViewPager.getCurrentItem())), mDATAArrayList.get(mViewPager.getCurrentItem()).id + ".png");
+                                Snackbar.make(mViewPager, "正在保存。。", Snackbar.LENGTH_LONG).show();
                             }
                         }).show();
             }

@@ -5,9 +5,9 @@ android {
     buildToolsVersion "23.0.1"
     defaultConfig {
         applicationId "com.renkun.mnpic"
-        minSdkVersion 17
+        minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
+        versionCode 2
         versionName "2.3.0"
     }
     buildTypes {
@@ -15,38 +15,27 @@ android {
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
             debuggable false
-            //混淆
-            minifyEnabled false
-            //Zipalign优化
+            jniDebuggable false
+            renderscriptDebuggable true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            zipAlignEnabled true
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            debuggable false
+            jniDebuggable false
+            renderscriptDebuggable true
+            //无用文件
+            shrinkResources true
+            //混淆
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+            //Zipalign优化
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' }
 
     }
 
-    signingConfigs {
-        debugConfig {
-            storeFile file("android.keystore");
-            storePassword "zhengrenkun"
-            keyAlias "mnpic"
-            keyPassword "zxcvbnm8"
-        }
-
-        releaseConfig {
-            storeFile file("android.keystore");
-            storePassword "zhengrenkun"
-            keyAlias "mnpic"
-            keyPassword "zxcvbnm8"
-        }
-    }
-
-    productFlavors {
-    }
 }
 
 
@@ -59,5 +48,5 @@ dependencies {
     compile files('libs/gson-2.2.4.jar')
     compile 'com.commit451:PhotoView:1.2.4'
     compile files('libs/picasso-2.5.2.jar')
-    compile files('libs/YoumiSdk_v5.1.1_2015-08-26.jar')
+    compile project(':bDIntegrationSDK_LibProject')
 }

@@ -80,11 +80,13 @@ public class HotListAdapter extends CursorAdapter {
         ImageView mImageView;
         TextView mTextViewMonth;
         TextView mTextViewDay;
-
+     
         public Holder(View view){
             mImageView= (ImageView) view.findViewById(R.id.item_pic);
             mTextViewDay= (TextView) view.findViewById(R.id.item_time_day);
             mTextViewMonth= (TextView) view.findViewById(R.id.item_time_month);
+  
+
         }
     }
 }

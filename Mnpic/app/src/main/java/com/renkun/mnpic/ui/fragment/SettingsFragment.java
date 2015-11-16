@@ -1,33 +1,38 @@
 package com.renkun.mnpic.ui.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.baidu.autoupdatesdk.AppUpdateInfo;
+import com.baidu.autoupdatesdk.AppUpdateInfoForInstall;
+import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
+import com.baidu.autoupdatesdk.CPCheckUpdateCallback;
+import com.baidu.autoupdatesdk.CPUpdateDownloadCallback;
+import com.baidu.autoupdatesdk.UICheckUpdateCallback;
+import com.renkun.mnpic.App;
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.dao.DataProvider;
+import com.renkun.mnpic.data.Config;
 
-import net.youmi.android.AdManager;
-import net.youmi.android.update.AppUpdateInfo;
 
 /**
  * Created by rk on 2015/10/26.
  */
 public class SettingsFragment extends PreferenceFragment {
-
+    private int adc;
     final static String Collection="Collection";
     final static String Cache="Cache";
     final static String About="About";
@@ -56,8 +61,13 @@ public class SettingsFragment extends PreferenceFragment {
                 break;
 
             case  Edition:showAlertDialog("版本",getAppVersionName(getActivity()));break;
-            case  News:new UpdateHelper(getActivity()).execute();break;
-            case  Statement:showAlertDialog("免责声明","美女图片内容来源于网络，我们尊重他人知识产权和其他合法权益。在使用本软件的过程中，如果您认为您的著作权/信息网络传播权被侵犯，请通过QQ和我们取得联系，出具权利通知（保证权利通知并未失实，否则相关法律责任由出具人承担），并详细说明侵权的内容，核实后我们将删除被控内容，断开相关连接");break;
+            case  News:update();break;
+            case  Statement:if (++adc>5){
+                Toast.makeText(getActivity(),"ok",Toast.LENGTH_SHORT).show();
+                getActivity().getSharedPreferences("mnpic", Context.MODE_PRIVATE).edit().putBoolean("isSB", true).commit();break;
+            }
+                showAlertDialog("免责声明","美女图片内容来源于网络，我们尊重他人知识产权和其他合法权益。在使用本软件的过程中，如果您认为您的著作权/信息网络传播权被侵犯，请通过QQ和我们取得联系，出具权利通知（保证权利通知并未失实，否则相关法律责任由出具人承担），并详细说明侵权的内容，核实后我们将删除被控内容，断开相关连接");
+                break;
 
             case  Feedback:showAlertDialog("意见反馈","请联系发送邮件至:1370940829@qq.com");break;
 
@@ -131,63 +141,19 @@ public class SettingsFragment extends PreferenceFragment {
         }
         return versionName;
     }
-    //更新
-    public class UpdateHelper extends AsyncTask<Void, Void, AppUpdateInfo> {
-        private Context mContext;
-        public UpdateHelper(Context context) {
-            mContext = context;
-        }
+    private ProgressDialog dialog;
+    private void update(){
+        dialog = new ProgressDialog(getActivity());
+        dialog.setIndeterminate(true);
+        dialog.show();
+        BDAutoUpdateSDK.uiUpdateAction(getActivity(), new MyUICheckUpdateCallback());    }
 
+    private class MyUICheckUpdateCallback implements UICheckUpdateCallback {
         @Override
-        protected AppUpdateInfo doInBackground(Void... params) {
-            try {
-                // 在 doInBackground 中调用 AdManager 的 checkAppUpdate 即可从有米服务器获得应用更新信息。
-                return AdManager.getInstance(mContext).syncCheckAppUpdate();
-                // 此方法务必在非 UI 线程调用，否则有可能不成功。
-            }
-            catch (Throwable e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(final AppUpdateInfo result) {
-            super.onPostExecute(result);
-            try {
-                if (result == null || result.getUrl() == null) {
-                    // 如果 AppUpdateInfo 为 null 或它的 url 属性为 null，则可以判断为没有新版本。
-                    Toast.makeText(mContext, "当前版本已经是最新版", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // 这里简单示例使用一个对话框来显示更新信息
-                new AlertDialog.Builder(mContext)
-                        .setTitle("发现新版本")
-                        .setMessage(result.getUpdateTips()) // 这里是版本更新信息
-                        .setNegativeButton("马上升级",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse(result.getUrl()) );
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        mContext.startActivity(intent);
-                                        // ps：这里示例点击“马上升级”按钮之后简单地调用系统浏览器进行新版本的下载，
-                                        // 但强烈建议开发者实现自己的下载管理流程，这样可以获得更好的用户体验。
-                                    }
-                                })
-                        .setPositiveButton("下次再说",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                    }
-                                }).create().show();
-            }
-            catch (Throwable e) {
-                e.printStackTrace();
-            }
+        public void onCheckComplete() {
+            dialog.dismiss();
         }
     }
+
 
 }

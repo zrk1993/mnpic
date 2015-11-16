@@ -3,23 +3,22 @@
     package="com.renkun.mnpic" >
     <uses-permission android:name="android.permission.SET_WALLPAPER"/>
     <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        >
         <activity
-            android:name=".ui.activity.WelcomeActivity"
+            android:name=".ui.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" >
             <intent-filter>
@@ -28,12 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" >
-        </activity>
-
         <provider
             android:name=".dao.DataProvider"
             android:authorities="com.renkun.mnpic.provider"
@@ -59,31 +52,43 @@
                   android:theme="@style/AppTheme"
                   />
 
-        <!-- 有米广告配置 -->
-        <activity
-            android:name="net.youmi.android.AdBrowser"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
 
-        <service
-            android:name="net.youmi.android.AdService"
-            android:exported="false" >
-        </service>
+        <meta-data
+            android:name="BDAPPID"
+            android:value="7196682"/>
+        <meta-data
+            android:name="BDAPPKEY"
+            android:value="W25kv3YNB07D09PS2gF9FCdpxgbtdV4N"/>
 
-        <receiver android:name="net.youmi.android.AdReceiver" >
+        <!-- 移动云AppX SDK -->
+        <activity android:name="com.baidu.appx.ui.BDInnerBrowser" />
+
+        <receiver android:name="com.baidu.appx.app_download.CompleteReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
-
                 <data android:scheme="package" />
+                <!-- 注意！！ 这句必须要加，否则接收不到安装完成广播 -->
             </intent-filter>
         </receiver>
-        <!-- 有米渠道号(可选配置) 渠道号不能带空格，类型为整数 -->
-        <meta-data
-            android:name="YOUMI_CHANNEL"
-            android:value="10010" >
-        </meta-data>
 
+        <!-- 自动更新SDK -->
+        <activity android:name="com.baidu.autoupdatesdk.ConfirmDialoigActivity"
+                  android:screenOrientation="sensor"
+                  android:exported="false"
+                  android:theme="@style/bdp_update_dialog_style_fullscreen" />
+        <receiver android:name="com.baidu.autoupdatesdk.receiver.BDBroadcastReceiver"
+                  android:exported="false">
+            <intent-filter>
+                <action android:name="com.baidu.autoupdatesdk.ACTION_NEW_UPDATE"/>
+                <action android:name="com.baidu.autoupdatesdk.ACTION_DOWNLOAD_COMPLETE"/>
+                <action android:name="com.baidu.autoupdatesdk.ACTION_NEW_AS"/>
+                <action android:name="com.baidu.autoupdatesdk.ACTION_AS_DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

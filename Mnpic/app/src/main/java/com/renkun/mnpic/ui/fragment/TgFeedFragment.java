@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.ILoadingLayout;
@@ -41,6 +42,7 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
     private GridView mGridView;
     private PullToRefreshGridView mPullRefreshGridView;
     private PicListCursorAdapter mPicListCursorAdapter;
+    private ProgressBar mload_progress;
 
     private int NumColumns=1;
     private int PIC_CLASSIFY = 1;//图片类别
@@ -85,6 +87,7 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
+        mload_progress= (ProgressBar) view.findViewById(R.id.load_progress);
         initView(view);
         return view;
     }
@@ -95,7 +98,7 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
 
         initGrideView();
         mPicListCursorAdapter=new PicListCursorAdapter(getActivity(), mGridView);
-        mGridView.setNumColumns(NumColumns);
+        mGridView.setNumColumns(1);
         mGridView.setAdapter(mPicListCursorAdapter);
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -149,6 +152,7 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
                     @Override
                     public void run() {
                         mPullRefreshGridView.onRefreshComplete();
+                        mload_progress.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "网络有点问题", Toast.LENGTH_LONG).show();
                     }
                 });            }
@@ -170,6 +174,7 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
                         @Override
                         public void run() {
                             mPullRefreshGridView.onRefreshComplete();
+                            mload_progress.setVisibility(View.GONE);
                             Snackbar.make(getView(),"已经加载完了，等小编更新。。",Snackbar.LENGTH_SHORT)
                                     .setAction("好吧", new View.OnClickListener() {
                                         @Override
@@ -214,12 +219,17 @@ public class TgFeedFragment extends Fragment implements LoaderManager.LoaderCall
 
         @Override
         public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
-            mGridView.setSelection(0);
+            Snackbar.make(getView(),"最后那一张了，要返回顶部吗？",Snackbar.LENGTH_SHORT)
+                    .setAction("是", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mGridView.setSelection(0);
+                        }
+                    })
+                    .show();
             refreshView.onRefreshComplete();
         }
     }
-
-
     @Override
     public void onPause() {
         super.onPause();

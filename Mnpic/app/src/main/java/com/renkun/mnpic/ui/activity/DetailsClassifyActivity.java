@@ -2,7 +2,6 @@ package com.renkun.mnpic.ui.activity;
 
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -16,15 +15,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.baidu.appx.BDInterstitialAd;
+import com.baidu.mobstat.StatService;
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.ui.fragment.BdFragment;
 
-import net.youmi.android.spot.SpotDialogListener;
-import net.youmi.android.spot.SpotManager;
-
 public class DetailsClassifyActivity extends AppCompatActivity {
-    private  String CLASSIFY;
+    private String CLASSIFY;
     private TextView title;
+    private static String TAG = "AppX_Interstitial";
+    private BDInterstitialAd appxInterstitialAdView;
     //百度图片URL参数
     private int pn;
     private int rn;
@@ -38,16 +38,8 @@ public class DetailsClassifyActivity extends AppCompatActivity {
     private ImageView mBack;
     public Fragment mContent;//当前显示的fragment
 
-    //广告
-    public  boolean isShowYM;//插屏广告是否展示了
-    @Override
-    public void onBackPressed() {
-        if (!SpotManager.getInstance(this).disMiss()) {
-            // 弹出退出窗口，可以使用自定义退屏弹出和回退动画,参照demo,若不使用动画，传入-1
-            super.onBackPressed();
-        }
-    }
-
+    private Handler mHandler;
+    private Runnable mRunnable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,35 +47,35 @@ public class DetailsClassifyActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_details_classify);
-        title= (TextView) findViewById(R.id.title);
-        mBack= (ImageView) findViewById(R.id.fabBtn);
+        title = (TextView) findViewById(R.id.title);
+        mBack = (ImageView) findViewById(R.id.fabBtn);
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        mLinearLayout= (LinearLayout) findViewById(R.id.img_but);
-        mButCollect= (ImageButton) findViewById(R.id.but_collect);
-        mButWrallper= (ImageButton) findViewById(R.id.set_wrallper);
-        CLASSIFY=getIntent().getStringExtra("classify");
+        mLinearLayout = (LinearLayout) findViewById(R.id.img_but);
+        mButCollect = (ImageButton) findViewById(R.id.but_collect);
+        mButWrallper = (ImageButton) findViewById(R.id.set_wrallper);
+        CLASSIFY = getIntent().getStringExtra("classify");
         title.setText(CLASSIFY);
+        mHandler=new Handler();
         //百度图片参数
-        pn=0;
-        rn=16;
-        tag1="美女";
-        tag2=CLASSIFY;
-        flags="全部";
-        fm=getSupportFragmentManager();
+        pn = 0;
+        rn = 16;
+        tag1 = "美女";
+        tag2 = CLASSIFY;
+        flags = "全部";
+        fm = getSupportFragmentManager();
         if (savedInstanceState == null) {
             FragmentTransaction transaction = fm.beginTransaction();
-            mContent=new BdFragment(pn,rn,tag1,tag2,flags);
-            transaction.add(R.id.fragment_details,mContent);
+            mContent = new BdFragment(pn, rn, tag1, tag2, flags);
+            transaction.add(R.id.fragment_details, mContent);
             transaction.commit();
-            initYOUMI(this);
         }
-
     }
+
     public void switchContent(Fragment from, Fragment to) {
         if (mContent != to) {
             mContent = to;
@@ -99,39 +91,80 @@ public class DetailsClassifyActivity extends AppCompatActivity {
         }
     }
 
-    private void initYOUMI(final Context context){
-        new Handler().postDelayed(new Runnable() {
+    private void initAD(){
+        appxInterstitialAdView = new BDInterstitialAd(this,
+                "W25kv3YNB07D09PS2gF9FCdpxgbtdV4N", "BT6pAg9wXtRKRGL6GUGXr2iy");
+        // 设置插屏广告行为监听器
+        appxInterstitialAdView.setAdListener(new BDInterstitialAd.InterstitialAdListener() {
+
+            @Override
+            public void onAdvertisementDataDidLoadFailure() {
+                Log.e(TAG, "load failure");
+            }
+
+            @Override
+            public void onAdvertisementDataDidLoadSuccess() {
+                Log.e(TAG, "load success");
+            }
+
+            @Override
+            public void onAdvertisementViewDidClick() {
+                Log.e(TAG, "on click");
+            }
+
+            @Override
+            public void onAdvertisementViewDidHide() {
+                Log.e(TAG, "on hide");
+            }
+
+            @Override
+            public void onAdvertisementViewDidShow() {
+                Log.e(TAG, "on show");
+            }
+
+            @Override
+            public void onAdvertisementViewWillStartNewIntent() {
+                Log.e(TAG, "leave");
+            }
+
+        });
+
+        mRunnable=new Runnable() {
             @Override
             public void run() {
-                showYM(DetailsClassifyActivity.this);
+                if (appxInterstitialAdView.isLoaded()) {
+                    appxInterstitialAdView.showAd();
+                } else {
+                    Log.i(TAG, "AppX Interstitial Ad is not ready");
+                    appxInterstitialAdView.loadAd();
+                }
             }
-        }, 6000);
+        };
+
+        mHandler.postDelayed(mRunnable, 5000);
+    }
+
+    public void onResume() {
+        super.onResume();
+        initAD();
+
+        /**
+         * 页面起始（每个Activity中都需要添加，如果有继承的父Activity中已经添加了该调用，那么子Activity中务必不能添加）
+         * 不能与StatService.onPageStart一级onPageEnd函数交叉使用
+         */
+        StatService.onResume(this);
+    }
+
+    public void onPause() {
+        super.onPause();
+        mHandler.removeCallbacks(mRunnable);
+
+        /**
+         * 页面结束（每个Activity中都需要添加，如果有继承的父Activity中已经添加了该调用，那么子Activity中务必不能添加）
+         * 不能与StatService.onPageStart一级onPageEnd函数交叉使用
+         */
+        StatService.onPause(this);
 
     }
-    private void showYM(Context context){
-        if (!isShowYM)
-            SpotManager.getInstance(context).showSpotAds(context, new SpotDialogListener() {
-                @Override
-                public void onShowSuccess() {
-                    isShowYM=true;
-                    Log.i("YoumiSdk", "onShowSuccess");
-                }
-                @Override
-                public void onShowFailed() {
-                    isShowYM=false;
-                    Log.i("YoumiSdk", "onShowFailed");
-                }
 
-                @Override
-                public void onSpotClosed() {
-                    isShowYM=false;
-                    Log.e("YoumiSdk", "closed");
-                }
-
-                @Override
-                public void onSpotClick() {
-                    Log.i("YoumiSdk", "插屏点击");
-                }
-            });
-    }
 }

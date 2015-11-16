@@ -53,11 +53,10 @@ public class WallpaperUtli {
     }
 
     public static void setWallpaper(Context context,Bitmap bitmap){
-        WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
         try {
             WallpaperManager instance = WallpaperManager.getInstance(context);
                                int[] i= Screenutil.getScreenHeightANDheight(context);
-                                instance.suggestDesiredDimensions(i[0], i[1]);
+                                instance.suggestDesiredDimensions(i[0]*2, i[1]);
                                instance.setBitmap(bitmap);
                                 Toast.makeText(context,"壁纸设置成功",Toast.LENGTH_SHORT).show();
         } catch (IOException e) {

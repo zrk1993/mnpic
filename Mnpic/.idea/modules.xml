@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Mnpic.iml" filepath="$PROJECT_DIR$/Mnpic.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bDIntegrationSDK_LibProject/bDIntegrationSDK_LibProject.iml" filepath="$PROJECT_DIR$/bDIntegrationSDK_LibProject/bDIntegrationSDK_LibProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/pullToRefrash/pullToRefrash.iml" filepath="$PROJECT_DIR$/pullToRefrash/pullToRefrash.iml" />
     </modules>
   </component>

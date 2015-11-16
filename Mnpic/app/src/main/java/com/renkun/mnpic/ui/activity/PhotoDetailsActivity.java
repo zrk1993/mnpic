@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -16,7 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.renkun.mnpic.App;
+import com.baidu.appx.BDInterstitialAd;
+import com.baidu.mobstat.StatService;
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.data.Api;
 import com.renkun.mnpic.data.OkHttpClientManager;
@@ -26,9 +26,6 @@ import com.renkun.mnpic.util.WallpaperUtli;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-
-import net.youmi.android.spot.SpotDialogListener;
-import net.youmi.android.spot.SpotManager;
 
 import java.io.IOException;
 
@@ -49,9 +46,14 @@ public class PhotoDetailsActivity extends AppCompatActivity {
     private ImageView mback;
     private PhotoViewPagerAdapter mPhotoViewPagerAdapter;
     private ProgressBar mload_progress;
+    private Handler mHandler;
+    private Runnable mRunnable;
 
-    //广告
-    public boolean isShowYM;//插屏广告是否展示了
+    private static String TAG = "AppX_Interstitial";
+    private BDInterstitialAd appxInterstitialAdView;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class PhotoDetailsActivity extends AppCompatActivity {
         mContext = this;
         mload_progress= (ProgressBar) findViewById(R.id.load_progress);
         mViewPager = (ViewPager) findViewById(R.id.photo_pager);
+        mViewPager.setOffscreenPageLimit(4);
         mTextTitle = (TextView) findViewById(R.id.title);
         mTextNnm = (TextView) findViewById(R.id.size);
         mback = (ImageView) findViewById(R.id.fabBtn);
@@ -75,6 +78,7 @@ public class PhotoDetailsActivity extends AppCompatActivity {
         mButCollect = (ImageButton) findViewById(R.id.but_collect);
         mButWrallper = (ImageButton) findViewById(R.id.set_wrallper);
 
+        mHandler=new Handler();
         id = getIntent().getIntExtra("id", 1);
         size = getIntent().getIntExtra("size", 5);
         title = getIntent().getStringExtra("title");
@@ -83,7 +87,60 @@ public class PhotoDetailsActivity extends AppCompatActivity {
         mTextNnm.setText("1/" + size);
         loadPhoto();
     }
+    private void initAD(){
+        appxInterstitialAdView = new BDInterstitialAd(this,
+                "W25kv3YNB07D09PS2gF9FCdpxgbtdV4N", "BT6pAg9wXtRKRGL6GUGXr2iy");
+        // 设置插屏广告行为监听器
+        appxInterstitialAdView.setAdListener(new BDInterstitialAd.InterstitialAdListener() {
 
+            @Override
+            public void onAdvertisementDataDidLoadFailure() {
+                Log.e(TAG, "load failure");
+            }
+
+            @Override
+            public void onAdvertisementDataDidLoadSuccess() {
+                Log.e(TAG, "load success");
+            }
+
+            @Override
+            public void onAdvertisementViewDidClick() {
+                Log.e(TAG, "on click");
+            }
+
+            @Override
+            public void onAdvertisementViewDidHide() {
+                Log.e(TAG, "on hide");
+            }
+
+            @Override
+            public void onAdvertisementViewDidShow() {
+                Log.e(TAG, "on show");
+            }
+
+            @Override
+            public void onAdvertisementViewWillStartNewIntent() {
+                Log.e(TAG, "leave");
+            }
+
+        });
+
+        // 加载广告
+        appxInterstitialAdView.loadAd();
+        mRunnable=new Runnable() {
+            @Override
+            public void run() {
+                if (appxInterstitialAdView.isLoaded()) {
+                    appxInterstitialAdView.showAd();
+                } else {
+                    Log.i(TAG, "AppX Interstitial Ad is not ready");
+                    appxInterstitialAdView.loadAd();
+                }
+            }
+        };
+
+        mHandler.postDelayed(mRunnable, 5000);
+    }
     private void loadPhoto() {
         Request request = new Request.Builder()
                 .url(String.format(Api.TNPIC_SHOW, id))
@@ -140,7 +197,6 @@ public class PhotoDetailsActivity extends AppCompatActivity {
                                             }).show();
                                 }
                             });
-
                             mButCollect.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -173,54 +229,30 @@ public class PhotoDetailsActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        initYOUMI(this);
+        initAD();
+
+        /**
+         * 页面起始（每个Activity中都需要添加，如果有继承的父Activity中已经添加了该调用，那么子Activity中务必不能添加）
+         * 不能与StatService.onPageStart一级onPageEnd函数交叉使用
+         */
+        StatService.onResume(this);
     }
 
-    private void initYOUMI(final Context context) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showYM(PhotoDetailsActivity.this);
-            }
-        }, 5000+size*200);
+    public void onPause() {
+        super.onPause();
+        mHandler.removeCallbacks(mRunnable);
+
+        /**
+         * 页面结束（每个Activity中都需要添加，如果有继承的父Activity中已经添加了该调用，那么子Activity中务必不能添加）
+         * 不能与StatService.onPageStart一级onPageEnd函数交叉使用
+         */
+        StatService.onPause(this);
 
     }
 
-    private void showYM(Context context) {
-        if (!isShowYM)
-            SpotManager.getInstance(context).showSpotAds(context, new SpotDialogListener() {
-                @Override
-                public void onShowSuccess() {
-                    isShowYM = true;
-                    Log.i("YoumiSdk", "onShowSuccess");
-                }
-                @Override
-                public void onShowFailed() {
-                    isShowYM = false;
-                    Log.i("YoumiSdk", "onShowFailed");
-                }
-                @Override
-                public void onSpotClosed() {
-                    isShowYM = false;
-                    Log.e("YoumiSdk", "closed");
-                }
-                @Override
-                public void onSpotClick() {
-                    Log.i("YoumiSdk", "插屏点击");
-                }
-            });
-    }
 
-    @Override
-    public void onBackPressed() {
-        if (!SpotManager.getInstance(this).disMiss()) {
-            // 弹出退出窗口，可以使用自定义退屏弹出和回退动画,参照demo,若不使用动画，传入-1
-            super.onBackPressed();
-        }
-    }
 
 
 }

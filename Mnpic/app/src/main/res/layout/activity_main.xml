@@ -5,9 +5,10 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/colorWhite">
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
         android:layout_marginTop="6dp"
         android:layout_marginLeft="3dp"
         android:layout_marginBottom="2dp"
@@ -16,20 +17,20 @@
             android:id="@+id/fabBtn"
             android:layout_width="?attr/actionBarSize"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
+            android:layout_marginRight="10dp"
             android:clickable="true"
             android:src="@drawable/flower"
             android:background="@drawable/click_color"
             />
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="right"
             app:tabIndicatorColor="#ff4444"
-            android:layout_alignParentRight="true"
-            />
 
-    </RelativeLayout>
+            />
+    </LinearLayout>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1px"

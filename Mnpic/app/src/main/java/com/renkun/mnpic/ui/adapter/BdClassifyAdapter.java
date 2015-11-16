@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.renkun.mnpic.R;
+import com.renkun.mnpic.data.Config;
 import com.renkun.mnpic.util.Screenutil;
 
 /**
@@ -31,8 +32,10 @@ public class BdClassifyAdapter extends ArrayAdapter {
             R.drawable.bd8,R.drawable.bd9,R.drawable.bd10,R.drawable.bd11,
             R.drawable.bd12,R.drawable.bd13,R.drawable.bd14};
     //分类标题
-    public static final String title[]={"小清新","甜素纯","清纯","校花","唯美","气质","嫩萝莉","时尚",
+    public  String title1[]={"小清新","甜素纯","清纯","校花","唯美","气质","嫩萝莉","时尚",
                                         "长发","可爱","古典美女","素颜","非主流","短发","高雅大气很有范"};
+    public   String title[]={"小清新","甜素纯","清纯","校花","气质","嫩萝莉",
+            "长发","可爱","古典美女","素颜","非主流","短发"};
     public BdClassifyAdapter(Context context, int resource) {
         super(context, resource);
         mContext=context;
@@ -41,6 +44,8 @@ public class BdClassifyAdapter extends ArrayAdapter {
         heightPixels= (int) (widthPixels*1.4);
         mLayoutInflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (Config.isSb){title=title1;}
+
     }
 
     @Override

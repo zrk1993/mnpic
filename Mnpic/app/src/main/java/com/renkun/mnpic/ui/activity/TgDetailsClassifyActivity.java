@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.renkun.mnpic.R;
 import com.renkun.mnpic.ui.fragment.TgFeedFragment;
 
+
 public class TgDetailsClassifyActivity extends AppCompatActivity {
     private  int CLASSIFY;
     private TextView title;
@@ -45,6 +46,14 @@ public class TgDetailsClassifyActivity extends AppCompatActivity {
         TgFeedFragment feedFragment=new TgFeedFragment(CLASSIFY,2);
         transaction.replace(R.id.fragment_details,feedFragment);
         transaction.commit();
+    }
+    public void onResume() {
+        super.onResume();
+
+    }
+    public void onPause() {
+        super.onPause();
+
     }
 
 }
